@@ -59,8 +59,8 @@ export const installNodeMac = async (win: BrowserWindow): Promise<void> => {
 
   log('Node.js 22 다운로드 중...')
   await downloadFile(url, dest)
-  log('Node.js 설치 중... (관리자 권한 필요)')
-  await runWithLog('sudo', ['installer', '-pkg', dest, '-target', '/'], log, { shell: true })
+  log('Node.js 설치 창을 열고 있습니다...')
+  await runWithLog('open', ['-W', dest], log)
   log('Node.js 설치 완료!')
 }
 
