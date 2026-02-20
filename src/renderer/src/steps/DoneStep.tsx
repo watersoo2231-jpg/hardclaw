@@ -41,6 +41,13 @@ export default function DoneStep({ botUsername }: { botUsername?: string }): Rea
     setStatus(r.success ? 'running' : 'stopped')
   }
 
+  const handleRestart = async (): Promise<void> => {
+    setStatus('starting')
+    await window.electronAPI.gateway.stop()
+    const r = await window.electronAPI.gateway.start()
+    setStatus(r.success ? 'running' : 'stopped')
+  }
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-10 gap-6">
       <div className="relative">
@@ -114,9 +121,14 @@ export default function DoneStep({ botUsername }: { botUsername?: string }): Rea
           </Button>
         )}
         {status === 'running' ? (
-          <Button variant="secondary" size="sm" onClick={handleStop}>
-            중지
-          </Button>
+          <>
+            <Button variant="secondary" size="sm" onClick={handleRestart}>
+              재시작
+            </Button>
+            <Button variant="secondary" size="sm" onClick={handleStop}>
+              중지
+            </Button>
+          </>
         ) : status === 'stopped' ? (
           <Button variant="secondary" size="sm" onClick={handleStart}>
             다시 시작
