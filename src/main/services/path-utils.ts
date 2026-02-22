@@ -1,4 +1,4 @@
-import { existsSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import { platform, homedir } from 'os'
 import { join } from 'path'
 
@@ -58,6 +58,29 @@ export const getNativeEnv = (extra?: Record<string, string>): NodeJS.ProcessEnv 
     .filter(Boolean)
     .join(';')
   return extra ? { ...cleaned, ...extra } : cleaned
+}
+
+/** Windows 네이티브 모드용 openclaw bin 엔트리 파일 절대 경로 탐색 */
+export const findOpenclawBin = (): string | null => {
+  const candidateDirs = [
+    join(process.env.APPDATA ?? '', 'npm', 'node_modules', 'openclaw'),
+    join(homedir(), '.openclaw', 'cli', 'node_modules', 'openclaw')
+  ]
+  for (const dir of candidateDirs) {
+    const pkgPath = join(dir, 'package.json')
+    if (!existsSync(pkgPath)) continue
+    try {
+      const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+      const bin = typeof pkg.bin === 'string' ? pkg.bin : pkg.bin?.openclaw
+      if (bin) {
+        const resolved = join(dir, bin)
+        if (existsSync(resolved)) return resolved
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  return null
 }
 
 export const findBin = (name: string): string => {

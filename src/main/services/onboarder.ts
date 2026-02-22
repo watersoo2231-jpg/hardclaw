@@ -50,7 +50,14 @@ const waitTelegramClear = async (token: string): Promise<void> => {
   }
 }
 
-import { getPathEnv, getNativeEnv, findBin, findNodeExe, findNpmCli } from './path-utils'
+import {
+  getPathEnv,
+  getNativeEnv,
+  findBin,
+  findNodeExe,
+  findNpmCli,
+  findOpenclawBin
+} from './path-utils'
 import type { WinInstallMode } from './env-checker'
 
 const wslExec = (command: string, timeoutMs = 30000): Promise<string> =>
@@ -110,6 +117,11 @@ const createRunCmd = (
           fullArgs = [npmCli, ...args]
           useShell = false
         }
+      }
+
+      // 네이티브 모드에서 절대 경로 실행 시 shell: false (공백 포함 경로 안전 처리)
+      if (isNative && cmd.includes('\\')) {
+        useShell = false
       }
 
       const child = spawn(fullCmd, fullArgs, {
@@ -273,10 +285,8 @@ export const runOnboard = async (
     glm: ['--auth-choice', 'zai-api-key', '--zai-api-key', config.apiKey]
   }
 
-  const onboardArgs = [
-    'exec',
-    '--',
-    'openclaw',
+  // openclaw 직접 실행용 인자 (npm exec 래퍼 없이)
+  const openclawArgs = [
     'onboard',
     '--non-interactive',
     '--accept-risk',
@@ -292,8 +302,31 @@ export const runOnboard = async (
     '--skip-skills'
   ]
 
-  try {
+  // npm exec 래퍼 인자 (WSL/macOS용)
+  const onboardArgs = ['exec', '--', 'openclaw', ...openclawArgs]
+
+  // 네이티브 모드: 설치된 openclaw 바이너리를 직접 실행하여 npx 캐시 재설치 우회
+  const runOnboardNative = async (): Promise<void> => {
+    const ocBin = findOpenclawBin()
+    const nodeExe = findNodeExe()
+    if (ocBin && nodeExe) {
+      log(`openclaw 직접 실행: ${ocBin}`)
+      try {
+        await runCmd(nodeExe, [ocBin, ...openclawArgs], log)
+        return
+      } catch {
+        log(`직접 실행 실패, npm exec fallback 시도...`)
+      }
+    }
     await runCmd(npm, onboardArgs, log)
+  }
+
+  try {
+    if (isNative) {
+      await runOnboardNative()
+    } else {
+      await runCmd(npm, onboardArgs, log)
+    }
   } catch (e) {
     // onboard가 gateway 연결 테스트(1006)로 실패해도
     // config 파일이 생성되었으면 계속 진행 (DoneStep에서 gateway를 별도 시작)
