@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import StepIndicator from './components/StepIndicator'
+import UpdateBanner from './components/UpdateBanner'
 import { useWizard } from './hooks/useWizard'
 import WelcomeStep from './steps/WelcomeStep'
 import EnvCheckStep from './steps/EnvCheckStep'
@@ -158,6 +159,8 @@ function App(): React.JSX.Element {
             </span>
           )}
         </div>
+
+        <UpdateBanner />
 
         {canGoBack && currentStep !== 'troubleshoot' && (
           <button

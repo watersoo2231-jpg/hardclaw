@@ -39,6 +39,7 @@ interface ElectronAPI {
     stop: () => Promise<{ success: boolean; error?: string }>
     status: () => Promise<'running' | 'stopped'>
     onLog: (cb: (msg: string) => void) => () => void
+    onStatusChanged: (cb: (status: 'running' | 'stopped') => void) => () => void
   }
   troubleshoot: {
     checkPort: () => Promise<{ inUse: boolean; pid?: string }>
@@ -55,6 +56,19 @@ interface ElectronAPI {
   }
   newsletter: {
     subscribe: (email: string) => Promise<{ success: boolean }>
+  }
+  update: {
+    check: () => Promise<{ success: boolean }>
+    download: () => Promise<{ success: boolean }>
+    install: () => Promise<{ success: boolean }>
+    onAvailable: (cb: (info: { version: string }) => void) => () => void
+    onProgress: (cb: (percent: number) => void) => () => void
+    onDownloaded: (cb: () => void) => () => void
+    onError: (cb: (msg: string) => void) => () => void
+  }
+  autoLaunch: {
+    get: () => Promise<{ enabled: boolean }>
+    set: (enabled: boolean) => Promise<{ success: boolean }>
   }
 }
 

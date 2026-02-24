@@ -14,10 +14,30 @@ export default function DoneStep({
   const [hasError, setHasError] = useState(false)
   const [logs, setLogs] = useState<string[]>([])
   const [showLogs, setShowLogs] = useState(false)
+  const [autoLaunch, setAutoLaunch] = useState(false)
+
+  // 자동 시작 설정 로드
+  useEffect(() => {
+    window.electronAPI.autoLaunch.get().then((r) => setAutoLaunch(r.enabled))
+  }, [])
+
+  const toggleAutoLaunch = async (): Promise<void> => {
+    const next = !autoLaunch
+    await window.electronAPI.autoLaunch.set(next)
+    setAutoLaunch(next)
+  }
 
   useEffect(() => {
     const unsub = window.electronAPI.gateway.onLog((msg) => {
       setLogs((prev) => [...prev, msg])
+    })
+    return unsub
+  }, [])
+
+  // 트레이에서의 Gateway 상태 변화 구독
+  useEffect(() => {
+    const unsub = window.electronAPI.gateway.onStatusChanged((s) => {
+      setStatus(s === 'running' ? 'running' : 'stopped')
     })
     return unsub
   }, [])
@@ -161,6 +181,28 @@ export default function DoneStep({
           </Button>
         ) : null}
       </div>
+
+      {/* 자동 시작 토글 */}
+      <button
+        onClick={toggleAutoLaunch}
+        className="glass-card flex items-center gap-3 px-5 py-3 w-full max-w-sm cursor-pointer hover:border-primary/40 transition-all duration-200"
+      >
+        <div className="text-left flex-1">
+          <p className="text-sm font-bold">시스템 시작 시 자동 실행</p>
+          <p className="text-[11px] text-text-muted">로그인 후 트레이에서 자동 시작</p>
+        </div>
+        <div
+          className={`w-10 h-5.5 rounded-full p-0.5 transition-colors duration-200 ${
+            autoLaunch ? 'bg-primary' : 'bg-white/15'
+          }`}
+        >
+          <div
+            className={`w-4.5 h-4.5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
+              autoLaunch ? 'translate-x-4.5' : 'translate-x-0'
+            }`}
+          />
+        </div>
+      </button>
 
       {/* Gateway 로그 */}
       {logs.length > 0 && (

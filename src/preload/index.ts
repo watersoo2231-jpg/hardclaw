@@ -46,6 +46,11 @@ const electronAPI = {
       const handler = (_: unknown, msg: string): void => cb(msg)
       ipcRenderer.on('gateway:log', handler)
       return () => ipcRenderer.removeListener('gateway:log', handler)
+    },
+    onStatusChanged: (cb: (status: 'running' | 'stopped') => void): (() => void) => {
+      const handler = (_: unknown, s: 'running' | 'stopped'): void => cb(s)
+      ipcRenderer.on('gateway:status-changed', handler)
+      return () => ipcRenderer.removeListener('gateway:status-changed', handler)
     }
   },
   troubleshoot: {
@@ -76,6 +81,36 @@ const electronAPI = {
   newsletter: {
     subscribe: (email: string): Promise<{ success: boolean }> =>
       ipcRenderer.invoke('newsletter:subscribe', email)
+  },
+  update: {
+    check: (): Promise<{ success: boolean }> => ipcRenderer.invoke('update:check'),
+    download: (): Promise<{ success: boolean }> => ipcRenderer.invoke('update:download'),
+    install: (): Promise<{ success: boolean }> => ipcRenderer.invoke('update:install'),
+    onAvailable: (cb: (info: { version: string }) => void): (() => void) => {
+      const handler = (_: unknown, info: { version: string }): void => cb(info)
+      ipcRenderer.on('update:available', handler)
+      return () => ipcRenderer.removeListener('update:available', handler)
+    },
+    onProgress: (cb: (percent: number) => void): (() => void) => {
+      const handler = (_: unknown, p: number): void => cb(p)
+      ipcRenderer.on('update:progress', handler)
+      return () => ipcRenderer.removeListener('update:progress', handler)
+    },
+    onDownloaded: (cb: () => void): (() => void) => {
+      const handler = (): void => cb()
+      ipcRenderer.on('update:downloaded', handler)
+      return () => ipcRenderer.removeListener('update:downloaded', handler)
+    },
+    onError: (cb: (msg: string) => void): (() => void) => {
+      const handler = (_: unknown, msg: string): void => cb(msg)
+      ipcRenderer.on('update:error', handler)
+      return () => ipcRenderer.removeListener('update:error', handler)
+    }
+  },
+  autoLaunch: {
+    get: (): Promise<{ enabled: boolean }> => ipcRenderer.invoke('autolaunch:get'),
+    set: (enabled: boolean): Promise<{ success: boolean }> =>
+      ipcRenderer.invoke('autolaunch:set', enabled)
   }
 }
 

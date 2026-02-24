@@ -20,6 +20,7 @@ import {
   setGatewayLogCallback
 } from './services/gateway'
 import { checkWslState } from './services/wsl-utils'
+import { checkForUpdates, downloadUpdate, installUpdate } from './services/updater'
 
 interface WizardPersistedState {
   step: string
@@ -212,5 +213,34 @@ export const registerIpcHandlers = (getWin: () => BrowserWindow | null): void =>
       stdio: 'ignore'
     })
     child.unref()
+  })
+
+  // 자동 업데이트 IPC
+  ipcMain.handle('update:check', () => {
+    checkForUpdates()
+    return { success: true }
+  })
+
+  ipcMain.handle('update:download', () => {
+    downloadUpdate()
+    return { success: true }
+  })
+
+  ipcMain.handle('update:install', () => {
+    installUpdate()
+    return { success: true }
+  })
+
+  // 자동 시작 IPC
+  ipcMain.handle('autolaunch:get', () => ({
+    enabled: app.getLoginItemSettings().openAtLogin
+  }))
+
+  ipcMain.handle('autolaunch:set', (_e, enabled: boolean) => {
+    app.setLoginItemSettings({
+      openAtLogin: enabled,
+      openAsHidden: true
+    })
+    return { success: true }
   })
 }

@@ -56,5 +56,7 @@ dmg:
       path: /Applications
 publish:
   provider: github
+  owner: ybgwon96
+  repo: easyclaw-releases
   releaseType: release
 npmRebuild: false
