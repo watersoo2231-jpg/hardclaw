@@ -19,7 +19,7 @@ const providerMeta: Record<Provider, { name: string; consoleUrl: string; console
   },
   minimax: {
     name: 'MiniMax',
-    consoleUrl: 'https://www.minimax.io/platform/api-keys',
+    consoleUrl: 'https://platform.minimax.io/user-center/basic-information/interface-key',
     consoleLabel: 'Platform에서 API 키 발급'
   },
   glm: {
