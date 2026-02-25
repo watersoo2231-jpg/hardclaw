@@ -59,7 +59,7 @@ const startGatewayWsl = async (): Promise<string> => {
         '-lc',
         'NODE_OPTIONS=--dns-result-order=ipv4first openclaw gateway run'
       ],
-      { shell: true, stdio: ['ignore', 'pipe', 'pipe'] }
+      { stdio: ['ignore', 'pipe', 'pipe'] }
     )
 
     wslGatewayProcess = child
@@ -116,7 +116,6 @@ const killWslGateway = (): Promise<void> =>
     const child = spawn(
       'wsl',
       ['-d', 'Ubuntu', '-u', 'root', '--', 'pkill', '-9', '-f', 'openclaw'],
-      { shell: true }
     )
     child.on('close', () => resolve())
     child.on('error', () => resolve())
@@ -147,8 +146,7 @@ const runDoctorFix = (): Promise<void> =>
     }
 
     const child = spawn(cmd, args, {
-      env: isWin ? process.env : getPathEnv(),
-      shell: isWin
+      env: isWin ? process.env : getPathEnv()
     })
     child.stdout.on('data', (d) => {
       const msg = d.toString().trim()
