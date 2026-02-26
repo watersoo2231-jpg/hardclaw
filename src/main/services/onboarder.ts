@@ -240,15 +240,8 @@ export const runOnboard = async (
     '--skip-skills'
   ]
 
-  const onboardArgs = ['exec', '--', 'openclaw', ...openclawArgs]
-
   try {
-    if (isWindows) {
-      // WSL 모드: openclaw 직접 실행
-      await runCmd('openclaw', openclawArgs, log)
-    } else {
-      await runCmd(npm, onboardArgs, log)
-    }
+    await runCmd(isWindows ? 'npm' : npm, ['exec', '--', 'openclaw', ...openclawArgs], log)
   } catch (e) {
     // onboard가 gateway 연결 테스트(1006)로 실패해도
     // config 파일이 생성되었으면 계속 진행
@@ -578,11 +571,7 @@ export const switchProvider = async (
   ]
 
   try {
-    if (isWindows) {
-      await runCmd('openclaw', openclawArgs, log)
-    } else {
-      await runCmd(npm, ['exec', '--', 'openclaw', ...openclawArgs], log)
-    }
+    await runCmd(isWindows ? 'npm' : npm, ['exec', '--', 'openclaw', ...openclawArgs], log)
   } catch (e) {
     if (isWindows) {
       try {
