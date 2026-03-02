@@ -344,30 +344,29 @@ export default function DoneStep({
         </div>
       )}
 
-      {/* ─── 카카오 채팅 배너 ─── */}
-      <button
-        onClick={() => window.open('https://open.kakao.com/o/gbBkPehi', '_blank')}
-        className="w-full max-w-md flex items-center gap-3 px-5 py-2.5 rounded-xl cursor-pointer bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 border border-primary/40 shadow-[0_0_20px_rgba(249,115,22,0.15)] hover:shadow-[0_0_24px_rgba(249,115,22,0.25)] hover:border-primary/60 transition-all duration-200"
-      >
-        <span className="text-lg">💬</span>
-        <div className="flex-1 text-left">
-          <span className="text-sm font-bold">{t('done.kakaoChat')}</span>
-          <p className="text-[11px] text-text-muted/70">{t('done.kakaoChatDesc')}</p>
-        </div>
-        <svg
-          className="text-primary/70"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      {/* ─── Star + 카카오 채팅 배너 ─── */}
+      <div className="w-full max-w-md grid grid-cols-2 gap-2">
+        <button
+          onClick={() => window.open('https://github.com/ybgwon96/easyclaw', '_blank')}
+          className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl cursor-pointer bg-white/5 border border-glass-border hover:border-primary/40 hover:bg-white/8 transition-all duration-200"
         >
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
+          <span className="text-lg">⭐</span>
+          <div className="flex-1 text-left">
+            <span className="text-sm font-bold">Star on GitHub</span>
+            <p className="text-[11px] text-text-muted/70">{t('done.starDesc')}</p>
+          </div>
+        </button>
+        <button
+          onClick={() => window.open('https://open.kakao.com/o/gbBkPehi', '_blank')}
+          className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl cursor-pointer bg-white/5 border border-glass-border hover:border-primary/40 hover:bg-white/8 transition-all duration-200"
+        >
+          <span className="text-lg">💬</span>
+          <div className="flex-1 text-left">
+            <span className="text-sm font-bold">{t('done.kakaoChat')}</span>
+            <p className="text-[11px] text-text-muted/70">{t('done.kakaoChatDesc')}</p>
+          </div>
+        </button>
+      </div>
 
       {/* ─── 액션 그리드 (3열) ─── */}
       <div className="w-full max-w-md grid grid-cols-3 gap-2">
