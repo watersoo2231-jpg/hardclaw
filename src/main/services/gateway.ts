@@ -23,11 +23,11 @@ const emitLog = (msg: string): void => {
 }
 
 const runGateway = (args: string[]): Promise<string> => {
-  const npm = findBin('npm')
-  const fullArgs = ['exec', '--', 'openclaw', 'gateway', ...args]
+  const openclaw = findBin('openclaw')
+  const fullArgs = ['gateway', ...args]
 
   return new Promise((resolve, reject) => {
-    const child = spawn(npm, fullArgs, {
+    const child = spawn(openclaw, fullArgs, {
       env: getPathEnv()
     })
 
@@ -165,8 +165,8 @@ const runDoctorFix = (): Promise<void> =>
       cmd = 'wsl'
       args = ['-d', 'Ubuntu', '-u', 'root', '--', 'bash', '-lc', 'openclaw doctor --fix']
     } else {
-      cmd = findBin('npm')
-      args = ['exec', '--', 'openclaw', 'doctor', '--fix']
+      cmd = findBin('openclaw')
+      args = ['doctor', '--fix']
     }
 
     const child = spawn(cmd, args, {

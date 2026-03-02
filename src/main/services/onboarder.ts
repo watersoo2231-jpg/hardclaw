@@ -119,7 +119,7 @@ export const runOnboard = async (
 
   const isWindows = platform() === 'win32'
   const isMac = platform() === 'darwin'
-  const npm = isWindows ? 'npm' : findBin('npm')
+  const ocBin = isWindows ? 'openclaw' : findBin('openclaw')
   const fixPath = join(homedir(), '.openclaw', 'ipv4-fix.js')
   const runCmd = createRunCmd()
 
@@ -228,7 +228,11 @@ export const runOnboard = async (
   ]
 
   try {
-    await runCmd(isWindows ? 'npm' : npm, ['exec', '--', 'openclaw', ...openclawArgs], log)
+    await runCmd(
+      isWindows ? 'npm' : ocBin,
+      isWindows ? ['exec', '--', 'openclaw', ...openclawArgs] : [...openclawArgs],
+      log
+    )
   } catch (e) {
     // onboard가 gateway 연결 테스트(1006)로 실패해도
     // config 파일이 생성되었으면 계속 진행
@@ -446,7 +450,7 @@ export const switchProvider = async (
 
   const isWindows = platform() === 'win32'
   const isMac = platform() === 'darwin'
-  const npm = isWindows ? 'npm' : findBin('npm')
+  const ocBin = isWindows ? 'openclaw' : findBin('openclaw')
   const runCmd = createRunCmd()
 
   log('프로바이더 전환 시작...')
@@ -545,7 +549,11 @@ export const switchProvider = async (
   ]
 
   try {
-    await runCmd(isWindows ? 'npm' : npm, ['exec', '--', 'openclaw', ...openclawArgs], log)
+    await runCmd(
+      isWindows ? 'npm' : ocBin,
+      isWindows ? ['exec', '--', 'openclaw', ...openclawArgs] : [...openclawArgs],
+      log
+    )
   } catch (e) {
     if (isWindows) {
       try {
