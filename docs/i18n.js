@@ -334,9 +334,24 @@ const translations = {
   }
 }
 
-const SUPPORTED_LANGS = ['ko', 'en', 'ja', 'zh']
-const DEFAULT_LANG = 'ko'
-const STORAGE_KEY = 'easyclaw-lang'
+var SUPPORTED_LANGS = ['ko', 'en', 'ja', 'zh']
+var DEFAULT_LANG = 'ko'
+var STORAGE_KEY = 'easyclaw-lang'
+var _currentLang = null
+
+function safeHtml(val) {
+  var tmp = document.createElement('div')
+  tmp.innerHTML = val
+  tmp.querySelectorAll('*').forEach(function (el) {
+    Array.from(el.attributes).forEach(function (attr) {
+      if (/^on/i.test(attr.name)) el.removeAttribute(attr.name)
+    })
+  })
+  tmp.querySelectorAll('script,iframe,object,embed,form').forEach(function (n) {
+    n.remove()
+  })
+  return tmp.innerHTML
+}
 
 function detectLang() {
   var saved = localStorage.getItem(STORAGE_KEY)
@@ -351,6 +366,7 @@ function detectLang() {
 
 function setLang(lang) {
   if (SUPPORTED_LANGS.indexOf(lang) === -1) lang = DEFAULT_LANG
+  _currentLang = lang
   localStorage.setItem(STORAGE_KEY, lang)
   applyLang(lang)
 }
@@ -359,11 +375,8 @@ function applyLang(lang) {
   var t = translations[lang]
   if (!t) return
 
+  _currentLang = lang
   document.documentElement.lang = lang
-  document.title = t['meta.title']
-
-  var metaDesc = document.querySelector('meta[name="description"]')
-  if (metaDesc) metaDesc.setAttribute('content', t['meta.description'])
 
   document.querySelectorAll('[data-i18n]').forEach(function (el) {
     var key = el.getAttribute('data-i18n')
@@ -372,14 +385,7 @@ function applyLang(lang) {
 
   document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
     var key = el.getAttribute('data-i18n-html')
-    if (t[key] != null) {
-      var tmp = document.createElement('div')
-      tmp.innerHTML = t[key]
-      tmp.querySelectorAll('script,iframe,object,embed,form').forEach(function (n) {
-        n.remove()
-      })
-      el.innerHTML = tmp.innerHTML
-    }
+    if (t[key] != null) el.innerHTML = safeHtml(t[key])
   })
 
   var selector = document.getElementById('lang-selector')
@@ -389,7 +395,7 @@ function applyLang(lang) {
 }
 
 function getCurrentLang() {
-  return localStorage.getItem(STORAGE_KEY) || detectLang()
+  return _currentLang || detectLang()
 }
 
 ;(function initI18n() {

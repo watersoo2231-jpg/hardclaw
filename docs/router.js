@@ -1,10 +1,14 @@
 /* ── SPA Router for Easy* Product Portal ── */
 ;(function () {
   var currentProduct = null
+  var _versionCache = {}
+  var _dom = {}
 
   function detectProduct() {
     var path = window.location.pathname
-    if (path === '/easycode' || path === '/easycode/') return 'code'
+    for (var key in PRODUCTS) {
+      if (PRODUCTS[key].path === path || PRODUCTS[key].path + '/' === path) return key
+    }
     return 'claw'
   }
 
@@ -14,6 +18,10 @@
     if (t[key] != null) return t[key]
     if (fallbackKey && t[fallbackKey] != null) return t[fallbackKey]
     return key
+  }
+
+  function getDownloadBase(p) {
+    return 'https://github.com/' + p.github + '/releases/latest/download/'
   }
 
   /* ── Feature icon SVGs ── */
@@ -48,110 +56,57 @@
 
   /* ── Nav tabs ── */
   function updateNavTabs(product) {
-    var tabs = document.querySelectorAll('.nav-tab')
-    tabs.forEach(function (tab) {
-      var isActive = tab.getAttribute('data-product') === product
-      tab.classList.toggle('nav-tab--active', isActive)
+    _dom.navTabs.forEach(function (tab) {
+      tab.classList.toggle('nav-tab--active', tab.getAttribute('data-product') === product)
     })
   }
 
-  /* ── Nav logo ── */
-  function updateNavLogo(product) {
-    var p = PRODUCTS[product]
-    var brandSpan = document.getElementById('nav-brand')
-    if (brandSpan) brandSpan.textContent = p.slug === 'claw' ? 'Claw' : 'Code'
+  /* ── Brand suffix ── */
+  function updateBrandText(p) {
+    _dom.brandParts.forEach(function (el) {
+      el.textContent = p.brandSuffix
+    })
   }
 
   /* ── Hero section ── */
   function updateHero(product) {
     var p = PRODUCTS[product]
     var prefix = p.i18nPrefix
+    var base = getDownloadBase(p)
 
     // Icon
-    var iconWrap = document.querySelector('.lobster-wrap')
-    if (iconWrap) iconWrap.innerHTML = getHeroIcon(product)
-
-    // Logo text
-    var logoEl = document.getElementById('hero-logo')
-    if (logoEl) {
-      var brandPart = logoEl.querySelector('.brand-part')
-      if (brandPart) brandPart.textContent = p.slug === 'claw' ? 'Claw' : 'Code'
-    }
+    if (_dom.iconWrap) _dom.iconWrap.innerHTML = getHeroIcon(product)
 
     // Tagline
-    var tagline = document.querySelector('.tagline')
-    if (tagline) {
-      var val = getT(prefix + 'hero.tagline', 'hero.tagline')
-      var tmp = document.createElement('div')
-      tmp.innerHTML = val
-      tmp.querySelectorAll('script,iframe,object,embed,form').forEach(function (n) {
-        n.remove()
-      })
-      tagline.innerHTML = tmp.innerHTML
-    }
+    if (_dom.tagline) _dom.tagline.innerHTML = safeHtml(getT(prefix + 'hero.tagline', 'hero.tagline'))
 
     // Download links
-    var base = 'https://github.com/' + p.github + '/releases/latest/download/'
-    var macLinks = document.querySelectorAll('[data-link="mac"]')
-    var winLinks = document.querySelectorAll('[data-link="win"]')
-    macLinks.forEach(function (a) {
-      a.href = base + p.dmg
-    })
-    winLinks.forEach(function (a) {
-      a.href = base + p.exe
-    })
+    _dom.macLinks.forEach(function (a) { a.href = base + p.dmg })
+    _dom.winLinks.forEach(function (a) { a.href = base + p.exe })
+    _dom.ghLinks.forEach(function (a) { a.href = 'https://github.com/' + p.github })
+    _dom.chatLinks.forEach(function (a) { a.href = p.openChat })
 
-    // GitHub link
-    var ghLinks = document.querySelectorAll('[data-link="github"]')
-    ghLinks.forEach(function (a) {
-      a.href = 'https://github.com/' + p.github
-    })
-
-    // Open chat link
-    var chatLinks = document.querySelectorAll('[data-link="chat"]')
-    chatLinks.forEach(function (a) {
-      a.href = p.openChat
-    })
-
-    // Download button labels
-    var macLabels = document.querySelectorAll('[data-label="downloadMac"]')
-    var winLabels = document.querySelectorAll('[data-label="downloadWin"]')
-    macLabels.forEach(function (el) {
-      el.textContent = getT(prefix + 'hero.downloadMac', 'hero.downloadMac')
-    })
-    winLabels.forEach(function (el) {
-      el.textContent = getT(prefix + 'hero.downloadWin', 'hero.downloadWin')
-    })
-
-    // Star GitHub label
-    var ghLabels = document.querySelectorAll('[data-label="starGithub"]')
-    ghLabels.forEach(function (el) {
-      el.textContent = getT(prefix + 'hero.starGithub', 'hero.starGithub')
-    })
-
-    // Open chat label
-    var chatLabels = document.querySelectorAll('[data-label="openChat"]')
-    chatLabels.forEach(function (el) {
-      el.textContent = getT(prefix + 'hero.openChat', 'hero.openChat')
-    })
+    // Labels
+    _dom.macLabels.forEach(function (el) { el.textContent = getT(prefix + 'hero.downloadMac', 'hero.downloadMac') })
+    _dom.winLabels.forEach(function (el) { el.textContent = getT(prefix + 'hero.downloadWin', 'hero.downloadWin') })
+    _dom.ghLabels.forEach(function (el) { el.textContent = getT(prefix + 'hero.starGithub', 'hero.starGithub') })
+    _dom.chatLabels.forEach(function (el) { el.textContent = getT(prefix + 'hero.openChat', 'hero.openChat') })
 
     // Demo GIF
-    var demoSection = document.getElementById('hero-demo')
-    if (demoSection) {
-      demoSection.style.display = p.demoGif ? '' : 'none'
+    if (_dom.heroDemo) {
+      _dom.heroDemo.style.display = p.demoGif ? '' : 'none'
       if (p.demoGif) {
-        var img = demoSection.querySelector('img')
+        var img = _dom.heroDemo.querySelector('img')
         if (img) img.src = p.demoGif
       }
     }
 
     // Product Hunt badge
-    var phSection = document.getElementById('hero-producthunt')
-    if (phSection) {
-      phSection.style.display = p.productHunt ? '' : 'none'
+    if (_dom.heroPH) {
+      _dom.heroPH.style.display = p.productHunt ? '' : 'none'
       if (p.productHunt) {
-        var a = phSection.querySelector('a')
-        var img = phSection.querySelector('img')
+        var a = _dom.heroPH.querySelector('a')
+        var img = _dom.heroPH.querySelector('img')
         if (a) a.href = p.productHunt
         if (img) img.src = p.productHuntImg
       }
@@ -162,29 +117,18 @@
   function updateFeatures(product) {
     var p = PRODUCTS[product]
     var prefix = p.i18nPrefix
-    var colors = ['orange', 'violet', 'cyan']
 
-    // Title & subtitle
-    var titleEl = document.getElementById('features-title')
-    var subEl = document.getElementById('features-sub')
-    if (titleEl) titleEl.textContent = getT(prefix + 'features.title', 'features.title')
-    if (subEl) subEl.textContent = getT(prefix + 'features.sub', 'features.sub')
+    if (_dom.featuresTitle) _dom.featuresTitle.textContent = getT(prefix + 'features.title', 'features.title')
+    if (_dom.featuresSub) _dom.featuresSub.textContent = getT(prefix + 'features.sub', 'features.sub')
 
-    // Feature cards
-    var cards = document.querySelectorAll('.feature-card')
+    var cards = _dom.featureCards
     p.features.forEach(function (feat, i) {
       if (!cards[i]) return
-      var card = cards[i]
+      var iconEl = cards[i].querySelector('.feature-icon')
+      if (iconEl && FEATURE_ICONS[feat.icon]) iconEl.innerHTML = FEATURE_ICONS[feat.icon]
 
-      // Icon
-      var iconEl = card.querySelector('.feature-icon')
-      if (iconEl && FEATURE_ICONS[feat.icon]) {
-        iconEl.innerHTML = FEATURE_ICONS[feat.icon]
-      }
-
-      // Title & desc
-      var h3 = card.querySelector('h3')
-      var pEl = card.querySelector('p')
+      var h3 = cards[i].querySelector('h3')
+      var pEl = cards[i].querySelector('p')
       if (h3) h3.textContent = getT(feat.i18n + '.title')
       if (pEl) pEl.textContent = getT(feat.i18n + '.desc')
     })
@@ -195,26 +139,15 @@
     var p = PRODUCTS[product]
     var prefix = p.i18nPrefix
 
-    var titleEl = document.getElementById('steps-title')
-    var subEl = document.getElementById('steps-sub')
-    if (titleEl) titleEl.textContent = getT(prefix + 'steps.title', 'steps.title')
-    if (subEl) subEl.textContent = getT(prefix + 'steps.sub', 'steps.sub')
+    if (_dom.stepsTitle) _dom.stepsTitle.textContent = getT(prefix + 'steps.title', 'steps.title')
+    if (_dom.stepsSub) _dom.stepsSub.textContent = getT(prefix + 'steps.sub', 'steps.sub')
 
-    var cards = document.querySelectorAll('.step-card')
-    p.steps.forEach(function (stepKey, i) {
-      if (!cards[i]) return
-      var h3 = cards[i].querySelector('h3')
-      var pEl = cards[i].querySelector('p')
-      if (h3) h3.textContent = getT(stepKey + '.title')
-      if (pEl) {
-        var val = getT(stepKey + '.desc')
-        var tmp = document.createElement('div')
-        tmp.innerHTML = val
-        tmp.querySelectorAll('script,iframe,object,embed,form').forEach(function (n) {
-          n.remove()
-        })
-        pEl.innerHTML = tmp.innerHTML
-      }
+    _dom.stepCards.forEach(function (card, i) {
+      if (!p.steps[i]) return
+      var h3 = card.querySelector('h3')
+      var pEl = card.querySelector('p')
+      if (h3) h3.textContent = getT(p.steps[i] + '.title')
+      if (pEl) pEl.innerHTML = safeHtml(getT(p.steps[i] + '.desc'))
     })
   }
 
@@ -222,24 +155,19 @@
   function updateCTA(product) {
     var p = PRODUCTS[product]
     var prefix = p.i18nPrefix
+    var base = getDownloadBase(p)
 
-    var titleEl = document.getElementById('cta-title')
-    var descEl = document.getElementById('cta-desc')
-    if (titleEl) titleEl.textContent = getT(prefix + 'cta.title', 'cta.title')
-    if (descEl) descEl.textContent = getT(prefix + 'cta.desc', 'cta.desc')
+    if (_dom.ctaTitle) _dom.ctaTitle.textContent = getT(prefix + 'cta.title', 'cta.title')
+    if (_dom.ctaDesc) _dom.ctaDesc.textContent = getT(prefix + 'cta.desc', 'cta.desc')
 
-    // CTA download links & labels
-    var ctaMac = document.getElementById('cta-mac')
-    var ctaWin = document.getElementById('cta-win')
-    var base = 'https://github.com/' + p.github + '/releases/latest/download/'
-    if (ctaMac) {
-      ctaMac.href = base + p.dmg
-      var span = ctaMac.querySelector('span')
+    if (_dom.ctaMac) {
+      _dom.ctaMac.href = base + p.dmg
+      var span = _dom.ctaMac.querySelector('span')
       if (span) span.textContent = getT(prefix + 'cta.downloadMac', 'cta.downloadMac')
     }
-    if (ctaWin) {
-      ctaWin.href = base + p.exe
-      var span = ctaWin.querySelector('span')
+    if (_dom.ctaWin) {
+      _dom.ctaWin.href = base + p.exe
+      var span = _dom.ctaWin.querySelector('span')
       if (span) span.textContent = getT(prefix + 'cta.downloadWin', 'cta.downloadWin')
     }
   }
@@ -250,30 +178,15 @@
     var otherP = PRODUCTS[other]
     var bannerKey = 'crossBanner.' + other
 
-    var bannerTitle = document.getElementById('cross-banner-title')
-    var bannerDesc = document.getElementById('cross-banner-desc')
-    var bannerBtn = document.getElementById('cross-banner-btn')
-
-    if (bannerTitle) bannerTitle.textContent = getT(bannerKey + '.title')
-    if (bannerDesc) bannerDesc.textContent = getT(bannerKey + '.desc')
-    if (bannerBtn) {
-      bannerBtn.textContent = getT(bannerKey + '.btn')
-      bannerBtn.setAttribute('data-product', other)
+    if (_dom.crossTitle) _dom.crossTitle.textContent = getT(bannerKey + '.title')
+    if (_dom.crossDesc) _dom.crossDesc.textContent = getT(bannerKey + '.desc')
+    if (_dom.crossBtn) {
+      _dom.crossBtn.textContent = getT(bannerKey + '.btn')
+      _dom.crossBtn.setAttribute('data-product', other)
     }
 
-    // Update banner accent
-    var card = document.querySelector('.cross-banner-card')
-    if (card) {
-      card.style.borderColor = otherP.accent.replace(')', ', 0.2)').replace('rgb', 'rgba')
-      card.style.borderColor = 'rgba(' + hexToRgb(otherP.accent) + ', 0.15)'
-    }
-  }
-
-  function hexToRgb(hex) {
-    var r = parseInt(hex.slice(1, 3), 16)
-    var g = parseInt(hex.slice(3, 5), 16)
-    var b = parseInt(hex.slice(5, 7), 16)
-    return r + ', ' + g + ', ' + b
+    var card = _dom.crossCard
+    if (card) card.style.borderColor = otherP.accentGlow.replace('0.35)', '0.15)')
   }
 
   /* ── Meta tags ── */
@@ -286,27 +199,33 @@
     if (metaDesc) metaDesc.setAttribute('content', getT(prefix + 'meta.description', 'meta.description'))
   }
 
-  /* ── Version badge ── */
+  /* ── Version badge (cached) ── */
   function fetchVersion(product) {
     var p = PRODUCTS[product]
-    var badge = document.getElementById('version-badge')
-    if (!badge) return
+    if (!_dom.badge) return
 
-    badge.textContent = getT(p.i18nPrefix + 'hero.versionLoading', 'hero.versionLoading')
+    // Use cache if available
+    if (_versionCache[product]) {
+      _dom.badge.textContent =
+        _versionCache[product] + ' ' + getT('hero.versionRelease')
+      return
+    }
+
+    _dom.badge.textContent = getT('hero.versionLoading')
 
     fetch('https://api.github.com/repos/' + p.github + '/releases/latest')
-      .then(function (r) {
-        return r.json()
-      })
+      .then(function (r) { return r.json() })
       .then(function (d) {
-        if (d.tag_name && currentProduct === product) {
-          badge.textContent =
-            d.tag_name + ' ' + getT(p.i18nPrefix + 'hero.versionRelease', 'hero.versionRelease')
+        if (d.tag_name) {
+          _versionCache[product] = d.tag_name
+          if (currentProduct === product) {
+            _dom.badge.textContent = d.tag_name + ' ' + getT('hero.versionRelease')
+          }
         }
       })
       .catch(function () {
         if (currentProduct === product) {
-          badge.textContent = getT(p.i18nPrefix + 'hero.versionFallback', 'hero.versionFallback')
+          _dom.badge.textContent = getT('hero.versionFallback')
         }
       })
   }
@@ -314,11 +233,7 @@
   /* ── Nav download button ── */
   function updateNavDownload(product) {
     var p = PRODUCTS[product]
-    var navDl = document.querySelector('.nav-download')
-    if (navDl) {
-      navDl.href =
-        'https://github.com/' + p.github + '/releases/latest/download/' + p.dmg
-    }
+    if (_dom.navDl) _dom.navDl.href = getDownloadBase(p) + p.dmg
   }
 
   /* ── Main switch ── */
@@ -329,7 +244,7 @@
 
     applyAccent(p)
     updateNavTabs(product)
-    updateNavLogo(product)
+    updateBrandText(p)
     updateNavDownload(product)
     updateHero(product)
     updateFeatures(product)
@@ -364,19 +279,52 @@
   /* ── popstate ── */
   window.addEventListener('popstate', function (e) {
     var product = (e.state && e.state.product) || detectProduct()
-    switchProduct(product, false)
+    if (product !== currentProduct) switchProduct(product, false)
   })
+
+  /* ── Cache DOM references ── */
+  function cacheDOM() {
+    _dom.badge = document.getElementById('version-badge')
+    _dom.navTabs = document.querySelectorAll('.nav-tab')
+    _dom.navDl = document.querySelector('.nav-download')
+    _dom.brandParts = document.querySelectorAll('.brand-part')
+    _dom.iconWrap = document.querySelector('.lobster-wrap')
+    _dom.tagline = document.querySelector('.tagline')
+    _dom.macLinks = document.querySelectorAll('[data-link="mac"]')
+    _dom.winLinks = document.querySelectorAll('[data-link="win"]')
+    _dom.ghLinks = document.querySelectorAll('[data-link="github"]')
+    _dom.chatLinks = document.querySelectorAll('[data-link="chat"]')
+    _dom.macLabels = document.querySelectorAll('[data-label="downloadMac"]')
+    _dom.winLabels = document.querySelectorAll('[data-label="downloadWin"]')
+    _dom.ghLabels = document.querySelectorAll('[data-label="starGithub"]')
+    _dom.chatLabels = document.querySelectorAll('[data-label="openChat"]')
+    _dom.heroDemo = document.getElementById('hero-demo')
+    _dom.heroPH = document.getElementById('hero-producthunt')
+    _dom.featuresTitle = document.getElementById('features-title')
+    _dom.featuresSub = document.getElementById('features-sub')
+    _dom.featureCards = document.querySelectorAll('.feature-card')
+    _dom.stepsTitle = document.getElementById('steps-title')
+    _dom.stepsSub = document.getElementById('steps-sub')
+    _dom.stepCards = document.querySelectorAll('.step-card')
+    _dom.ctaTitle = document.getElementById('cta-title')
+    _dom.ctaDesc = document.getElementById('cta-desc')
+    _dom.ctaMac = document.getElementById('cta-mac')
+    _dom.ctaWin = document.getElementById('cta-win')
+    _dom.crossTitle = document.getElementById('cross-banner-title')
+    _dom.crossDesc = document.getElementById('cross-banner-desc')
+    _dom.crossBtn = document.getElementById('cross-banner-btn')
+    _dom.crossCard = document.querySelector('.cross-banner-card')
+  }
 
   /* ── Init ── */
   function init() {
-    // Bind nav tab clicks
-    var navTabs = document.querySelector('.nav-tabs')
-    if (navTabs) navTabs.addEventListener('click', handleNavClick)
+    cacheDOM()
 
-    // Bind cross-banner button
-    var crossBannerBtn = document.getElementById('cross-banner-btn')
-    if (crossBannerBtn) {
-      crossBannerBtn.addEventListener('click', function (e) {
+    var navTabsWrap = document.querySelector('.nav-tabs')
+    if (navTabsWrap) navTabsWrap.addEventListener('click', handleNavClick)
+
+    if (_dom.crossBtn) {
+      _dom.crossBtn.addEventListener('click', function (e) {
         e.preventDefault()
         var product = this.getAttribute('data-product')
         switchProduct(product, true)
@@ -384,7 +332,6 @@
       })
     }
 
-    // Detect & switch
     var product = detectProduct()
     history.replaceState({ product: product }, '', PRODUCTS[product].path)
     switchProduct(product, false)

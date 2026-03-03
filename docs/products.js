@@ -2,6 +2,7 @@ var PRODUCTS = {
   claw: {
     name: 'EasyClaw',
     slug: 'claw',
+    brandSuffix: 'Claw',
     accent: '#f97316',
     accentHover: '#fb923c',
     accentLight: '#fdba74',
@@ -29,6 +30,7 @@ var PRODUCTS = {
   code: {
     name: 'EasyCode',
     slug: 'code',
+    brandSuffix: 'Code',
     accent: '#da7756',
     accentHover: '#e8956f',
     accentLight: '#f0b89e',

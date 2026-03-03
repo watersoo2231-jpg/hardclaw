@@ -1316,7 +1316,7 @@
                   d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"
                 />
               </svg>
-              <span data-label="downloadMac" data-i18n="hero.downloadMac">macOS 다운로드</span>
+              <span data-label="downloadMac">macOS 다운로드</span>
             </a>
             <a
               href="https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe"
@@ -1329,7 +1329,7 @@
                   d="M3 12V6.75l8-1.25V12H3zm0 .5h8v6.5l-8-1.25V12.5zM11.5 12V5.35l9.5-1.6V12H11.5zm0 .5H21v8.25l-9.5-1.6V12.5z"
                 />
               </svg>
-              <span data-label="downloadWin" data-i18n="hero.downloadWin">Windows 다운로드</span>
+              <span data-label="downloadWin">Windows 다운로드</span>
             </a>
             <a
               href="https://github.com/ybgwon96/easyclaw"
@@ -1344,7 +1344,7 @@
                   d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
                 />
               </svg>
-              <span data-label="starGithub" data-i18n="hero.starGithub">Star on GitHub</span>
+              <span data-label="starGithub">Star on GitHub</span>
             </a>
             <a
               href="https://open.kakao.com/o/gbBkPehi"
@@ -1359,7 +1359,7 @@
                   d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67-.15.53-.96 3.4-.99 3.62 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.44 4.28-2.85.55.08 1.13.12 1.72.12 5.52 0 10-3.58 10-7.81C22 6.58 17.52 3 12 3z"
                 />
               </svg>
-              <span data-label="openChat" data-i18n="hero.openChat">오픈채팅방 참여하기</span>
+              <span data-label="openChat">오픈채팅방 참여하기</span>
             </a>
           </div>
           <div class="hero-anim hero-anim-d6" id="hero-demo" style="margin-top: 2rem; width: 100%; max-width: 640px;">
@@ -1375,8 +1375,8 @@
       <section id="features">
         <div class="container" style="text-align: center">
           <span class="section-label reveal" data-i18n="features.label">Features</span>
-          <h2 class="section-title reveal" id="features-title" data-i18n="features.title">왜 EasyClaw인가요?</h2>
-          <p class="section-sub reveal" id="features-sub" data-i18n="features.sub">
+          <h2 class="section-title reveal" id="features-title">왜 EasyClaw인가요?</h2>
+          <p class="section-sub reveal" id="features-sub">
             설치부터 실행까지, 모든 과정을 간단하게.
           </p>
 
@@ -1448,8 +1448,8 @@
       <section id="steps">
         <div class="container" style="text-align: center">
           <span class="section-label reveal" data-i18n="steps.label">How it works</span>
-          <h2 class="section-title reveal" id="steps-title" data-i18n="steps.title">3단계면 끝</h2>
-          <p class="section-sub reveal" id="steps-sub" data-i18n="steps.sub">
+          <h2 class="section-title reveal" id="steps-title">3단계면 끝</h2>
+          <p class="section-sub reveal" id="steps-sub">
             설치 파일을 받고, 실행하고, 대화하세요.
           </p>
 
@@ -1484,8 +1484,8 @@
       <section class="cta">
         <div class="container">
           <div class="cta-card reveal">
-            <h2 id="cta-title" data-i18n="cta.title">지금 바로 시작하세요</h2>
-            <p id="cta-desc" data-i18n="cta.desc">
+            <h2 id="cta-title">지금 바로 시작하세요</h2>
+            <p id="cta-desc">
               복잡한 터미널 작업 없이, 클릭 한 번으로 AI 에이전트를 설치하세요.
             </p>
             <div class="btn-group" style="justify-content: center">
@@ -1638,56 +1638,6 @@
           },
           { passive: true }
         )
-      })()
-
-      // Waitlist form submission
-      ;(function () {
-        function handleSubmit(form, msgEl) {
-          form.addEventListener('submit', function (e) {
-            e.preventDefault()
-            var input = form.querySelector('input[type="email"]')
-            var btn = form.querySelector('button')
-            var origText = btn.textContent
-            btn.disabled = true
-            btn.textContent = '등록 중...'
-            msgEl.textContent = ''
-            msgEl.className = 'waitlist-msg'
-
-            fetch('/api/newsletter', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: input.value, source: 'landing' })
-            })
-              .then(function (r) {
-                return r.json()
-              })
-              .then(function (data) {
-                if (data.success) {
-                  msgEl.innerHTML =
-                    '등록 완료! 출시되면 가장 먼저 알려드릴게요.<br><a href="https://open.kakao.com/o/gbBkPehi" target="_blank" rel="noopener" style="color:#FEE500;font-weight:800;text-decoration:underline;text-underline-offset:3px">💬 오픈채팅방도 참여하기 →</a>'
-                  msgEl.className = 'waitlist-msg success'
-                  input.value = ''
-                } else {
-                  msgEl.textContent = data.error || '잠시 후 다시 시도해주세요.'
-                  msgEl.className = 'waitlist-msg error'
-                }
-              })
-              .catch(function () {
-                msgEl.textContent = '네트워크 오류. 잠시 후 다시 시도해주세요.'
-                msgEl.className = 'waitlist-msg error'
-              })
-              .finally(function () {
-                btn.disabled = false
-                btn.textContent = origText
-              })
-          })
-        }
-        var h = document.getElementById('waitlist-hero'),
-          hm = document.getElementById('waitlist-hero-msg')
-        var c = document.getElementById('waitlist-cta'),
-          cm = document.getElementById('waitlist-cta-msg')
-        if (h) handleSubmit(h, hm)
-        if (c) handleSubmit(c, cm)
       })()
 
       // Scroll reveal + steps line animation
