@@ -84,7 +84,12 @@
       "minimax": "Platform에서 API 키 발급",
       "glm": "Z.AI에서 API 키 발급"
     },
-    "keyReady": "키 준비 완료!"
+    "keyReady": "키 준비 완료!",
+    "authMethod": {
+      "oauth": "ChatGPT 로그인",
+      "api-key": "API 키"
+    },
+    "oauthDesc": "ChatGPT Plus/Pro 구독으로 로그인하세요"
   },
   "telegramGuide": {
     "title": "텔레그램 봇 만들기",
@@ -129,7 +134,12 @@
     "telegramHint": "올바른 형식: 123456:ABCDEF...",
     "errorOccurred": "설정 중 오류가 발생했습니다",
     "savingBtn": "설정 중...",
-    "saveBtn": "설정 저장"
+    "saveBtn": "설정 저장",
+    "oauthLogin": "OpenAI로 로그인",
+    "oauthLoggingIn": "로그인 중...",
+    "oauthSuccess": "로그인 완료",
+    "oauthError": "로그인에 실패했습니다. 다시 시도해 주세요.",
+    "oauthCancelled": "로그인이 취소되었습니다."
   },
   "troubleshoot": {
     "title": "문제 해결",

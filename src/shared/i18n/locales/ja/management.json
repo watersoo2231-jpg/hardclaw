@@ -59,7 +59,12 @@
     "change": "変更",
     "switching": "モデルを切り替え中...",
     "success": "モデルが正常に変更されました!",
-    "retry": "再試行"
+    "retry": "再試行",
+    "authMethod": "認証方法",
+    "oauthLogin": "OpenAIでログイン",
+    "oauthLoggingIn": "ログイン中...",
+    "oauthSuccess": "ログイン完了",
+    "oauthApiKey": "APIキー"
   },
   "updateBanner": {
     "available": "新しいバージョン v{{version}} が利用可能です",

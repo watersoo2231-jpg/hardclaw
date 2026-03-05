@@ -84,7 +84,12 @@
       "minimax": "Get API Key from Platform",
       "glm": "Get API Key from Z.AI"
     },
-    "keyReady": "Key is ready!"
+    "keyReady": "Key is ready!",
+    "authMethod": {
+      "oauth": "ChatGPT Login",
+      "api-key": "API Key"
+    },
+    "oauthDesc": "Sign in with your ChatGPT Plus/Pro subscription"
   },
   "telegramGuide": {
     "title": "Create a Telegram Bot",
@@ -129,7 +134,12 @@
     "telegramHint": "Correct format: 123456:ABCDEF...",
     "errorOccurred": "An error occurred during configuration",
     "savingBtn": "Saving...",
-    "saveBtn": "Save Configuration"
+    "saveBtn": "Save Configuration",
+    "oauthLogin": "Sign in with OpenAI",
+    "oauthLoggingIn": "Signing in...",
+    "oauthSuccess": "Login Successful",
+    "oauthError": "Login failed. Please try again.",
+    "oauthCancelled": "Login was cancelled."
   },
   "troubleshoot": {
     "title": "Troubleshoot",

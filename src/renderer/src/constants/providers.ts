@@ -1,4 +1,5 @@
 export type Provider = 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
+export type AuthMethod = 'api-key' | 'oauth'
 
 export interface ModelOption {
   id: string
@@ -13,6 +14,8 @@ export interface ProviderConfig {
   placeholder: string
   pattern: RegExp
   models: ModelOption[]
+  oauthModels?: ModelOption[]
+  authMethods?: AuthMethod[]
 }
 
 export const providerConfigs: ProviderConfig[] = [
@@ -108,7 +111,28 @@ export const providerConfigs: ProviderConfig[] = [
       { id: 'openai/gpt-5', name: 'GPT-5', desc: 'General Purpose', price: '$1.25/$10' },
       { id: 'openai/gpt-5-mini', name: 'GPT-5 Mini', desc: 'Lightweight', price: '$0.25/$2' },
       { id: 'openai/o4-mini', name: 'o4-mini', desc: 'Latest Reasoning', price: '$1.10/$4.40' }
-    ]
+    ],
+    oauthModels: [
+      {
+        id: 'openai-codex/gpt-5.3-codex',
+        name: 'GPT-5.3 Codex',
+        desc: 'Latest Coding (Recommended)',
+        price: 'Subscription'
+      },
+      {
+        id: 'openai-codex/gpt-5.2-codex',
+        name: 'GPT-5.2 Codex',
+        desc: 'Stable Coding',
+        price: 'Subscription'
+      },
+      {
+        id: 'openai-codex/gpt-5.1-codex',
+        name: 'GPT-5.1 Codex',
+        desc: 'Legacy',
+        price: 'Subscription'
+      }
+    ],
+    authMethods: ['api-key', 'oauth']
   },
   {
     id: 'minimax',

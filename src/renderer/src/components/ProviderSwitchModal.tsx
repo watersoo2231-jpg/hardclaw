@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Button from './Button'
 import LogViewer from './LogViewer'
 import { useInstallLogs } from '../hooks/useIpc'
-import { providerConfigs, type Provider } from '../constants/providers'
+import { providerConfigs, type Provider, type AuthMethod } from '../constants/providers'
 
 type Phase = 'form' | 'progress' | 'done' | 'error'
 
@@ -32,6 +32,9 @@ export default function ProviderSwitchModal({
       : initConfig.models[0].id
   const [modelId, setModelId] = useState(initModelId)
   const [apiKey, setApiKey] = useState('')
+  const [authMethod, setAuthMethod] = useState<AuthMethod>('api-key')
+  const [oauthDone, setOauthDone] = useState(false)
+  const [oauthLoading, setOauthLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const { logs, clearLogs } = useInstallLogs()
 
@@ -41,8 +44,29 @@ export default function ProviderSwitchModal({
   const handleProviderChange = (id: Provider): void => {
     setProvider(id)
     setApiKey('')
+    setAuthMethod('api-key')
+    setOauthDone(false)
     const cfg = providerConfigs.find((p) => p.id === id)!
     setModelId(cfg.models[0].id)
+  }
+
+  const isOAuth = provider === 'openai' && authMethod === 'oauth'
+  const activeModels = isOAuth ? (selected.oauthModels ?? selected.models) : selected.models
+
+  const handleOAuthLogin = async (): Promise<void> => {
+    setOauthLoading(true)
+    try {
+      const result = await window.electronAPI.oauth.loginCodex()
+      if (result.success) {
+        setOauthDone(true)
+      } else {
+        setErrorMsg(result.error === 'cancelled' ? '' : result.error || t('modal.errorOccurred'))
+      }
+    } catch {
+      setErrorMsg(t('modal.errorOccurred'))
+    } finally {
+      setOauthLoading(false)
+    }
   }
 
   const handleSwitch = async (): Promise<void> => {
@@ -52,7 +76,8 @@ export default function ProviderSwitchModal({
     try {
       const result = await window.electronAPI.config.switchProvider({
         provider,
-        apiKey,
+        ...(isOAuth ? {} : { apiKey }),
+        authMethod,
         modelId
       })
       if (result.success) {
@@ -91,13 +116,37 @@ export default function ProviderSwitchModal({
               ))}
             </div>
 
+            {selected.authMethods && (
+              <div className="flex rounded-lg border border-glass-border overflow-hidden bg-bg-card">
+                {selected.authMethods.map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => {
+                      setAuthMethod(m)
+                      setOauthDone(false)
+                      const models =
+                        m === 'oauth' ? (selected.oauthModels ?? selected.models) : selected.models
+                      setModelId(models[0].id)
+                    }}
+                    className={`flex-1 py-1.5 text-center text-xs font-bold transition-colors duration-200 cursor-pointer ${
+                      authMethod === m
+                        ? 'bg-primary/15 text-primary'
+                        : 'hover:bg-white/5 text-text-muted'
+                    }`}
+                  >
+                    {t(`providerSwitch.${m === 'oauth' ? 'oauthLogin' : 'oauthApiKey'}`)}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {/* Model list */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-text-muted">
                 {t('providerSwitch.modelSelect')}
               </label>
               <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
-                {selected.models.map((m) => (
+                {activeModels.map((m) => (
                   <button
                     key={m.id}
                     onClick={() => setModelId(m.id)}
@@ -130,29 +179,55 @@ export default function ProviderSwitchModal({
               </div>
             </div>
 
-            {/* API key input */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-text-muted">
-                {t('providerSwitch.apiKey')}
-              </label>
-              <input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder={tp(`apiKeyPlaceholder.${provider}`, selected.placeholder)}
-                className={`w-full bg-bg-input rounded-xl px-4 py-2 text-sm font-mono outline-none border transition-all duration-200 placeholder:text-text-muted/30 ${
-                  apiKey && !apiKeyValid
-                    ? 'border-error/50 focus:border-error'
-                    : 'border-glass-border focus:border-primary focus:shadow-[0_0_0_3px_var(--color-primary-glow)]'
-                }`}
-              />
-            </div>
+            {isOAuth ? (
+              <div className="space-y-1.5">
+                {oauthDone ? (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-success/10 border border-success/30 rounded-lg">
+                    <span className="text-xs font-medium text-success">
+                      {t('providerSwitch.oauthSuccess')}
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleOAuthLogin}
+                    disabled={oauthLoading}
+                    className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white/10 hover:bg-white/15 border border-glass-border rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50"
+                  >
+                    {oauthLoading
+                      ? t('providerSwitch.oauthLoggingIn')
+                      : t('providerSwitch.oauthLogin')}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-text-muted">
+                  {t('providerSwitch.apiKey')}
+                </label>
+                <input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder={tp(`apiKeyPlaceholder.${provider}`, selected.placeholder)}
+                  className={`w-full bg-bg-input rounded-xl px-4 py-2 text-sm font-mono outline-none border transition-all duration-200 placeholder:text-text-muted/30 ${
+                    apiKey && !apiKeyValid
+                      ? 'border-error/50 focus:border-error'
+                      : 'border-glass-border focus:border-primary focus:shadow-[0_0_0_3px_var(--color-primary-glow)]'
+                  }`}
+                />
+              </div>
+            )}
 
             <div className="flex gap-2 pt-1">
               <Button variant="secondary" size="sm" onClick={onClose}>
                 {t('providerSwitch.cancel')}
               </Button>
-              <Button variant="primary" size="sm" onClick={handleSwitch} disabled={!apiKeyValid}>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleSwitch}
+                disabled={isOAuth ? !oauthDone : !apiKeyValid}
+              >
                 {t('providerSwitch.change')}
               </Button>
             </div>

@@ -26,6 +26,7 @@ import { checkWslState } from './services/wsl-utils'
 import { checkForUpdates, downloadUpdate, installUpdate } from './services/updater'
 import { uninstallOpenClaw } from './services/uninstaller'
 import { exportBackup, importBackup } from './services/backup'
+import { loginOpenAICodex } from './services/oauth'
 
 interface WizardPersistedState {
   step: string
@@ -171,7 +172,8 @@ export const registerIpcHandlers = (getWin: () => BrowserWindow | null): void =>
       _e,
       config: {
         provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-        apiKey: string
+        apiKey?: string
+        authMethod?: 'api-key' | 'oauth'
         telegramBotToken?: string
         modelId?: string
       }
@@ -191,6 +193,16 @@ export const registerIpcHandlers = (getWin: () => BrowserWindow | null): void =>
     }
   )
 
+  ipcMain.handle('oauth:openai-codex', async () => {
+    try {
+      await loginOpenAICodex(win())
+      return { success: true }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e)
+      return { success: false, error: msg }
+    }
+  })
+
   // Read config / switch provider
   ipcMain.handle('config:read', async () => {
     try {
@@ -207,7 +219,8 @@ export const registerIpcHandlers = (getWin: () => BrowserWindow | null): void =>
       _e,
       config: {
         provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-        apiKey: string
+        apiKey?: string
+        authMethod?: 'api-key' | 'oauth'
         modelId?: string
       }
     ) => {

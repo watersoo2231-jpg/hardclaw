@@ -84,7 +84,12 @@
       "minimax": "PlatformでAPIキーを取得",
       "glm": "Z.AIでAPIキーを取得"
     },
-    "keyReady": "キーの準備完了!"
+    "keyReady": "キーの準備完了!",
+    "authMethod": {
+      "oauth": "ChatGPTログイン",
+      "api-key": "APIキー"
+    },
+    "oauthDesc": "ChatGPT Plus/Proサブスクリプションでログイン"
   },
   "telegramGuide": {
     "title": "Telegramボットを作成",
@@ -129,7 +134,12 @@
     "telegramHint": "正しい形式: 123456:ABCDEF...",
     "errorOccurred": "設定中にエラーが発生しました",
     "savingBtn": "設定中...",
-    "saveBtn": "設定を保存"
+    "saveBtn": "設定を保存",
+    "oauthLogin": "OpenAIでログイン",
+    "oauthLoggingIn": "ログイン中...",
+    "oauthSuccess": "ログイン完了",
+    "oauthError": "ログインに失敗しました。もう一度お試しください。",
+    "oauthCancelled": "ログインがキャンセルされました。"
   },
   "troubleshoot": {
     "title": "トラブルシューティング",

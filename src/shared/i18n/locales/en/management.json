@@ -59,7 +59,12 @@
     "change": "Change",
     "switching": "Switching model...",
     "success": "Model changed successfully!",
-    "retry": "Retry"
+    "retry": "Retry",
+    "authMethod": "Auth Method",
+    "oauthLogin": "Sign in with OpenAI",
+    "oauthLoggingIn": "Signing in...",
+    "oauthSuccess": "Login Successful",
+    "oauthApiKey": "API Key"
   },
   "updateBanner": {
     "available": "New version v{{version}} available",

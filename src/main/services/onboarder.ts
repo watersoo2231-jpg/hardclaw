@@ -10,7 +10,8 @@ import { t } from '../../shared/i18n/main'
 
 interface OnboardConfig {
   provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-  apiKey: string
+  apiKey?: string
+  authMethod?: 'api-key' | 'oauth'
   telegramBotToken?: string
   modelId?: string
 }
@@ -204,13 +205,18 @@ export const runOnboard = async (
   // Wait for port release + Telegram long-poll release
   await new Promise((resolve) => setTimeout(resolve, 5000))
 
-  const authFlags: Record<OnboardConfig['provider'], string[]> = {
-    anthropic: ['--auth-choice', 'apiKey', '--anthropic-api-key', config.apiKey],
-    google: ['--auth-choice', 'gemini-api-key', '--gemini-api-key', config.apiKey],
-    openai: ['--auth-choice', 'openai-api-key', '--openai-api-key', config.apiKey],
-    minimax: ['--auth-choice', 'minimax-api', '--minimax-api-key', config.apiKey],
-    glm: ['--auth-choice', 'zai-api-key', '--zai-api-key', config.apiKey]
-  }
+  // OAuth: use pre-stored tokens, no API key needed
+  const effectiveProvider = config.authMethod === 'oauth' ? 'openai-codex' : config.provider
+  const effectiveAuthFlags =
+    config.authMethod === 'oauth'
+      ? ['--auth-choice', 'openai-codex']
+      : {
+          anthropic: ['--auth-choice', 'apiKey', '--anthropic-api-key', config.apiKey!],
+          google: ['--auth-choice', 'gemini-api-key', '--gemini-api-key', config.apiKey!],
+          openai: ['--auth-choice', 'openai-api-key', '--openai-api-key', config.apiKey!],
+          minimax: ['--auth-choice', 'minimax-api', '--minimax-api-key', config.apiKey!],
+          glm: ['--auth-choice', 'zai-api-key', '--zai-api-key', config.apiKey!]
+        }[config.provider]
 
   const openclawArgs = [
     'onboard',
@@ -218,7 +224,7 @@ export const runOnboard = async (
     '--accept-risk',
     '--mode',
     'local',
-    ...authFlags[config.provider],
+    ...effectiveAuthFlags,
     '--gateway-port',
     '18789',
     '--gateway-bind',
@@ -268,10 +274,11 @@ export const runOnboard = async (
   }
 
   // Set recommended model per provider
-  const defaultModels: Record<OnboardConfig['provider'], string> = {
+  const defaultModels: Record<string, string> = {
     anthropic: 'anthropic/claude-sonnet-4-6',
     google: 'google/gemini-3-flash',
     openai: 'openai/gpt-5.2',
+    'openai-codex': 'openai-codex/gpt-5.3-codex',
     minimax: 'minimax/MiniMax-M2.5',
     glm: 'zai/glm-5'
   }
@@ -289,7 +296,7 @@ export const runOnboard = async (
     cfg.agents.defaults = cfg.agents.defaults ?? {}
     cfg.agents.defaults.model = {
       ...cfg.agents.defaults.model,
-      primary: config.modelId || defaultModels[config.provider]
+      primary: config.modelId || defaultModels[effectiveProvider]
     }
     const spec = modelSpecs[config.provider]
     if (spec && cfg.models?.providers) {
@@ -443,7 +450,12 @@ export const readCurrentConfig = async (): Promise<CurrentConfig | null> => {
 
 export const switchProvider = async (
   win: BrowserWindow,
-  config: { provider: OnboardConfig['provider']; apiKey: string; modelId?: string }
+  config: {
+    provider: OnboardConfig['provider']
+    apiKey?: string
+    authMethod?: 'api-key' | 'oauth'
+    modelId?: string
+  }
 ): Promise<void> => {
   const log = (msg: string): void => {
     win.webContents.send('install:progress', msg)
@@ -526,13 +538,17 @@ export const switchProvider = async (
 
   // 5. Re-run openclaw onboard
   log(t('onboarder.settingNewProvider'))
-  const authFlags: Record<OnboardConfig['provider'], string[]> = {
-    anthropic: ['--auth-choice', 'apiKey', '--anthropic-api-key', config.apiKey],
-    google: ['--auth-choice', 'gemini-api-key', '--gemini-api-key', config.apiKey],
-    openai: ['--auth-choice', 'openai-api-key', '--openai-api-key', config.apiKey],
-    minimax: ['--auth-choice', 'minimax-api', '--minimax-api-key', config.apiKey],
-    glm: ['--auth-choice', 'zai-api-key', '--zai-api-key', config.apiKey]
-  }
+  const effectiveProvider = config.authMethod === 'oauth' ? 'openai-codex' : config.provider
+  const effectiveAuthFlags =
+    config.authMethod === 'oauth'
+      ? ['--auth-choice', 'openai-codex']
+      : {
+          anthropic: ['--auth-choice', 'apiKey', '--anthropic-api-key', config.apiKey!],
+          google: ['--auth-choice', 'gemini-api-key', '--gemini-api-key', config.apiKey!],
+          openai: ['--auth-choice', 'openai-api-key', '--openai-api-key', config.apiKey!],
+          minimax: ['--auth-choice', 'minimax-api', '--minimax-api-key', config.apiKey!],
+          glm: ['--auth-choice', 'zai-api-key', '--zai-api-key', config.apiKey!]
+        }[config.provider]
 
   const openclawArgs = [
     'onboard',
@@ -540,7 +556,7 @@ export const switchProvider = async (
     '--accept-risk',
     '--mode',
     'local',
-    ...authFlags[config.provider],
+    ...effectiveAuthFlags,
     '--gateway-port',
     '18789',
     '--gateway-bind',
@@ -586,10 +602,11 @@ export const switchProvider = async (
 
   // 7. Patch model
   log(t('onboarder.applyingModel'))
-  const defaultModels: Record<OnboardConfig['provider'], string> = {
+  const defaultModels: Record<string, string> = {
     anthropic: 'anthropic/claude-sonnet-4-6',
     google: 'google/gemini-3-flash',
     openai: 'openai/gpt-5.2',
+    'openai-codex': 'openai-codex/gpt-5.3-codex',
     minimax: 'minimax/MiniMax-M2.5',
     glm: 'zai/glm-5'
   }
@@ -607,12 +624,12 @@ export const switchProvider = async (
   ): void => {
     ocConfig.agents = ocConfig.agents ?? {}
     ocConfig.agents.defaults = ocConfig.agents.defaults ?? {}
-    const selectedModel = config.modelId || defaultModels[config.provider]
+    const selectedModel = config.modelId || defaultModels[effectiveProvider]
     ocConfig.agents.defaults.model = {
       ...ocConfig.agents.defaults.model,
       primary: selectedModel
     }
-    const spec = modelSpecs[config.provider]
+    const spec = modelSpecs[effectiveProvider as OnboardConfig['provider']]
     if (spec && ocConfig.models?.providers) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const provider of Object.values(ocConfig.models.providers) as any[]) {

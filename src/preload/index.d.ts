@@ -35,10 +35,14 @@ interface ElectronAPI {
   onboard: {
     run: (config: {
       provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-      apiKey: string
+      apiKey?: string
+      authMethod?: 'api-key' | 'oauth'
       telegramBotToken?: string
       modelId?: string
     }) => Promise<{ success: boolean; error?: string; botUsername?: string }>
+  }
+  oauth: {
+    loginCodex: () => Promise<{ success: boolean; error?: string }>
   }
   reboot: () => void
   gateway: {
@@ -82,7 +86,8 @@ interface ElectronAPI {
     }>
     switchProvider: (config: {
       provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-      apiKey: string
+      apiKey?: string
+      authMethod?: 'api-key' | 'oauth'
       modelId?: string
     }) => Promise<{ success: boolean; error?: string }>
   }

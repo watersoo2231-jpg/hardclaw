@@ -67,6 +67,7 @@ function App(): React.JSX.Element {
     'anthropic'
   )
   const [modelId, setModelId] = useState<string | undefined>()
+  const [authMethod, setAuthMethod] = useState<'api-key' | 'oauth'>('api-key')
   const [botUsername, setBotUsername] = useState<string | undefined>()
   const [isWindows, setIsWindows] = useState(false)
   const [wslState, setWslState] = useState<WslState>('ready')
@@ -153,7 +154,10 @@ function App(): React.JSX.Element {
               onSelectProvider={(p) => {
                 setProvider(p)
                 setModelId(undefined)
+                setAuthMethod('api-key')
               }}
+              authMethod={authMethod}
+              onSelectAuthMethod={setAuthMethod}
               modelId={modelId}
               onSelectModel={setModelId}
               onNext={next}
@@ -161,7 +165,12 @@ function App(): React.JSX.Element {
           )}
           {currentStep === 'telegramGuide' && <TelegramGuideStep onNext={next} />}
           {currentStep === 'config' && (
-            <ConfigStep provider={provider} modelId={modelId} onDone={handleDone} />
+            <ConfigStep
+              provider={provider}
+              authMethod={authMethod}
+              modelId={modelId}
+              onDone={handleDone}
+            />
           )}
           {currentStep === 'done' && (
             <DoneStep

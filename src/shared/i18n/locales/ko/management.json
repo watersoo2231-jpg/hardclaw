@@ -59,7 +59,12 @@
     "change": "변경",
     "switching": "모델 전환 중...",
     "success": "모델이 성공적으로 변경되었습니다!",
-    "retry": "다시 시도"
+    "retry": "다시 시도",
+    "authMethod": "인증 방식",
+    "oauthLogin": "OpenAI로 로그인",
+    "oauthLoggingIn": "로그인 중...",
+    "oauthSuccess": "로그인 완료",
+    "oauthApiKey": "API 키"
   },
   "updateBanner": {
     "available": "새 버전 v{{version}} 사용 가능",

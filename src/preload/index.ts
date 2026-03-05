@@ -38,11 +38,16 @@ const electronAPI = {
   onboard: {
     run: (config: {
       provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-      apiKey: string
+      apiKey?: string
+      authMethod?: 'api-key' | 'oauth'
       telegramBotToken?: string
       modelId?: string
     }): Promise<{ success: boolean; error?: string; botUsername?: string }> =>
       ipcRenderer.invoke('onboard:run', config)
+  },
+  oauth: {
+    loginCodex: (): Promise<{ success: boolean; error?: string }> =>
+      ipcRenderer.invoke('oauth:openai-codex')
   },
   reboot: (): void => ipcRenderer.send('system:reboot'),
   gateway: {
@@ -124,7 +129,8 @@ const electronAPI = {
     }> => ipcRenderer.invoke('config:read'),
     switchProvider: (config: {
       provider: 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm'
-      apiKey: string
+      apiKey?: string
+      authMethod?: 'api-key' | 'oauth'
       modelId?: string
     }): Promise<{ success: boolean; error?: string }> =>
       ipcRenderer.invoke('config:switch-provider', config)

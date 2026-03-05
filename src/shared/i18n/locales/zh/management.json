@@ -59,7 +59,12 @@
     "change": "更改",
     "switching": "正在切换模型...",
     "success": "模型已成功更改！",
-    "retry": "重试"
+    "retry": "重试",
+    "authMethod": "认证方式",
+    "oauthLogin": "使用 OpenAI 登录",
+    "oauthLoggingIn": "登录中...",
+    "oauthSuccess": "登录成功",
+    "oauthApiKey": "API 密钥"
   },
   "updateBanner": {
     "available": "新版本 v{{version}} 可用",

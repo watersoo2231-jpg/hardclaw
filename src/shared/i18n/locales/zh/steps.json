@@ -84,7 +84,12 @@
       "minimax": "在 Platform 获取 API 密钥",
       "glm": "在 Z.AI 获取 API 密钥"
     },
-    "keyReady": "密钥已准备好！"
+    "keyReady": "密钥已准备好！",
+    "authMethod": {
+      "oauth": "ChatGPT 登录",
+      "api-key": "API 密钥"
+    },
+    "oauthDesc": "使用 ChatGPT Plus/Pro 订阅登录"
   },
   "telegramGuide": {
     "title": "创建 Telegram 机器人",
@@ -129,7 +134,12 @@
     "telegramHint": "正确格式：123456:ABCDEF...",
     "errorOccurred": "配置过程中发生错误",
     "savingBtn": "保存中...",
-    "saveBtn": "保存配置"
+    "saveBtn": "保存配置",
+    "oauthLogin": "使用 OpenAI 登录",
+    "oauthLoggingIn": "登录中...",
+    "oauthSuccess": "登录成功",
+    "oauthError": "登录失败，请重试。",
+    "oauthCancelled": "登录已取消。"
   },
   "troubleshoot": {
     "title": "问题排查",
