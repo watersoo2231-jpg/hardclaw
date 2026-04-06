@@ -112,6 +112,35 @@ interface ElectronAPI {
     getLocale: () => Promise<string>
     setLanguage: (lng: string) => Promise<{ success: boolean; error?: string }>
   }
+  profiles: {
+    list: () => Promise<{
+      activeId: string | null
+      profiles: Array<{
+        id: string
+        name: string
+        provider: string
+        apiKey?: string
+        authMethod: string
+        telegramBotToken?: string
+        botUsername?: string
+        modelId?: string
+        createdAt: number
+      }>
+    }>
+    save: (profile: {
+      id: string
+      name: string
+      provider: string
+      apiKey?: string
+      authMethod: string
+      telegramBotToken?: string
+      botUsername?: string
+      modelId?: string
+      createdAt: number
+    }) => Promise<{ success: boolean; error?: string }>
+    switch: (id: string) => Promise<{ success: boolean; botUsername?: string; error?: string }>
+    delete: (id: string) => Promise<{ success: boolean; error?: string }>
+  }
 }
 
 declare global {

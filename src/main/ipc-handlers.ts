@@ -27,6 +27,13 @@ import { checkForUpdates, downloadUpdate, installUpdate } from './services/updat
 import { uninstallOpenClaw } from './services/uninstaller'
 import { exportBackup, importBackup } from './services/backup'
 import { loginOpenAICodex } from './services/oauth'
+import {
+  listProfiles,
+  saveProfile,
+  setActiveProfile,
+  deleteProfile,
+  type BotProfile
+} from './services/profiles'
 
 interface WizardPersistedState {
   step: string
@@ -350,6 +357,46 @@ export const registerIpcHandlers = (getWin: () => BrowserWindow | null): void =>
   // Backup / restore
   ipcMain.handle('backup:export', () => exportBackup(win()))
   ipcMain.handle('backup:import', () => importBackup(win()))
+
+  // ── 멀티봇 프로필 관리 ──────────────────────────────
+  ipcMain.handle('profile:list', () => listProfiles())
+
+  ipcMain.handle('profile:save', (_e, profile: BotProfile) => {
+    try {
+      saveProfile(profile)
+      return { success: true }
+    } catch (e) {
+      return { success: false, error: e instanceof Error ? e.message : String(e) }
+    }
+  })
+
+  ipcMain.handle('profile:switch', async (_e, id: string) => {
+    try {
+      const data = listProfiles()
+      const profile = data.profiles.find((p) => p.id === id)
+      if (!profile) return { success: false, error: 'Profile not found' }
+      // openclaw.json 재설정 → 게이트웨이 재시작
+      await switchProvider(win(), {
+        provider: profile.provider,
+        apiKey: profile.apiKey,
+        authMethod: profile.authMethod,
+        modelId: profile.modelId
+      })
+      setActiveProfile(id)
+      return { success: true, botUsername: profile.botUsername }
+    } catch (e) {
+      return { success: false, error: e instanceof Error ? e.message : String(e) }
+    }
+  })
+
+  ipcMain.handle('profile:delete', (_e, id: string) => {
+    try {
+      deleteProfile(id)
+      return { success: true }
+    } catch (e) {
+      return { success: false, error: e instanceof Error ? e.message : String(e) }
+    }
+  })
 
   // i18n settings
   ipcMain.handle('i18n:get-locale', () => i18nMain.language || getSavedLocale())

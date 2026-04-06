@@ -164,6 +164,37 @@ const electronAPI = {
     getLocale: (): Promise<string> => ipcRenderer.invoke('i18n:get-locale'),
     setLanguage: (lng: string): Promise<{ success: boolean }> =>
       ipcRenderer.invoke('i18n:set-language', lng)
+  },
+  profiles: {
+    list: (): Promise<{
+      activeId: string | null
+      profiles: Array<{
+        id: string
+        name: string
+        provider: string
+        apiKey?: string
+        authMethod: string
+        telegramBotToken?: string
+        botUsername?: string
+        modelId?: string
+        createdAt: number
+      }>
+    }> => ipcRenderer.invoke('profile:list'),
+    save: (profile: {
+      id: string
+      name: string
+      provider: string
+      apiKey?: string
+      authMethod: string
+      telegramBotToken?: string
+      botUsername?: string
+      modelId?: string
+      createdAt: number
+    }): Promise<{ success: boolean; error?: string }> => ipcRenderer.invoke('profile:save', profile),
+    switch: (id: string): Promise<{ success: boolean; botUsername?: string; error?: string }> =>
+      ipcRenderer.invoke('profile:switch', id),
+    delete: (id: string): Promise<{ success: boolean; error?: string }> =>
+      ipcRenderer.invoke('profile:delete', id)
   }
 }
 

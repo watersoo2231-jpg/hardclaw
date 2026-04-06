@@ -44,6 +44,35 @@ export default function DoneStep({
 
   const { uninstall, backup } = useManagement(setStatus)
 
+  // ── 멀티봇 상태 ──────────────────────────────────────
+  type Profile = {
+    id: string
+    name: string
+    provider: string
+    botUsername?: string
+    telegramBotToken?: string
+    modelId?: string
+    createdAt: number
+  }
+  const [profiles, setProfiles] = useState<Profile[]>([])
+  const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
+  const [showAddBot, setShowAddBot] = useState(false)
+  const [addBotToken, setAddBotToken] = useState('')
+  const [addBotName, setAddBotName] = useState('')
+  const [addBotSaving, setAddBotSaving] = useState(false)
+  const [addBotError, setAddBotError] = useState('')
+  const [switchingId, setSwitchingId] = useState<string | null>(null)
+
+  const loadProfiles = useCallback(async () => {
+    const data = await window.electronAPI.profiles.list()
+    setProfiles(data.profiles as Profile[])
+    setActiveProfileId(data.activeId)
+  }, [])
+
+  useEffect(() => {
+    loadProfiles()
+  }, [loadProfiles])
+
   // Check for OpenClaw updates
   const checkOpenclawUpdate = useCallback(async () => {
     try {
@@ -57,6 +86,66 @@ export default function DoneStep({
       /* ignore network errors */
     }
   }, [])
+
+  // 봇 추가 핸들러
+  const handleAddBot = useCallback(async () => {
+    if (!addBotToken.trim()) return
+    setAddBotSaving(true)
+    setAddBotError('')
+    try {
+      // 현재 활성 프로필의 provider/apiKey를 그대로 사용, bot만 교체
+      const cfg = await window.electronAPI.config.read()
+      const provider = (cfg?.config?.provider as Profile['provider']) ?? 'anthropic'
+      const result = await window.electronAPI.onboard.run({
+        provider: provider as 'anthropic' | 'google' | 'openai' | 'minimax' | 'glm' | 'deepseek' | 'ollama',
+        authMethod: 'api-key',
+        telegramBotToken: addBotToken.trim()
+      })
+      if (!result.success) {
+        setAddBotError(result.error ?? '봇 추가 실패')
+        return
+      }
+      const newProfile = {
+        id: Date.now().toString(),
+        name: addBotName.trim() || result.botUsername || addBotToken.slice(0, 8),
+        provider,
+        authMethod: 'api-key',
+        telegramBotToken: addBotToken.trim(),
+        botUsername: result.botUsername,
+        createdAt: Date.now()
+      }
+      await window.electronAPI.profiles.save(newProfile as Parameters<typeof window.electronAPI.profiles.save>[0])
+      setAddBotToken('')
+      setAddBotName('')
+      setShowAddBot(false)
+      await loadProfiles()
+    } catch (e) {
+      setAddBotError(String(e))
+    } finally {
+      setAddBotSaving(false)
+    }
+  }, [addBotToken, addBotName, loadProfiles])
+
+  // 봇 전환 핸들러
+  const handleSwitchBot = useCallback(async (id: string) => {
+    setSwitchingId(id)
+    try {
+      const r = await window.electronAPI.profiles.switch(id)
+      if (r.success) {
+        setActiveProfileId(id)
+        setStatus('starting')
+        await loadProfiles()
+      }
+    } finally {
+      setSwitchingId(null)
+    }
+  }, [loadProfiles])
+
+  // 봇 삭제 핸들러
+  const handleDeleteBot = useCallback(async (id: string) => {
+    await window.electronAPI.profiles.delete(id)
+    await loadProfiles()
+  }, [loadProfiles])
 
   // Check once when Gateway is running + every 30 min
   useEffect(() => {
@@ -344,10 +433,100 @@ export default function DoneStep({
         </div>
       )}
 
+      {/* ─── 멀티봇 관리 ─── */}
+      <div className="w-full max-w-md">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[11px] font-bold text-text-muted uppercase tracking-wide">🤖 봇 목록</span>
+          <button
+            onClick={() => { setShowAddBot((v) => !v); setAddBotError('') }}
+            className="text-[11px] px-2.5 py-1 rounded-lg bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30 transition-all cursor-pointer font-bold"
+          >
+            + 봇 추가
+          </button>
+        </div>
+
+        {/* 봇 추가 폼 */}
+        {showAddBot && (
+          <div className="glass-card p-3 mb-2 flex flex-col gap-2">
+            <input
+              type="text"
+              placeholder="봇 이름 (선택)"
+              value={addBotName}
+              onChange={(e) => setAddBotName(e.target.value)}
+              className="w-full bg-bg-input border border-glass-border rounded-lg px-3 py-1.5 text-[12px] outline-none focus:border-primary/50"
+            />
+            <input
+              type="text"
+              placeholder="텔레그램 봇 토큰 (예: 123456:ABC...)"
+              value={addBotToken}
+              onChange={(e) => setAddBotToken(e.target.value)}
+              className="w-full bg-bg-input border border-glass-border rounded-lg px-3 py-1.5 text-[12px] outline-none focus:border-primary/50"
+            />
+            {addBotError && <p className="text-[11px] text-error">{addBotError}</p>}
+            <div className="flex gap-2">
+              <button
+                onClick={handleAddBot}
+                disabled={!addBotToken.trim() || addBotSaving}
+                className="flex-1 py-1.5 rounded-lg bg-primary text-white text-[12px] font-bold hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                {addBotSaving ? '추가 중...' : '추가'}
+              </button>
+              <button
+                onClick={() => { setShowAddBot(false); setAddBotError('') }}
+                className="px-3 py-1.5 rounded-lg bg-white/5 text-text-muted text-[12px] hover:bg-white/10 transition-all cursor-pointer"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 봇 목록 */}
+        {profiles.length > 0 && (
+          <div className="flex flex-col gap-1.5">
+            {profiles.map((p) => (
+              <div
+                key={p.id}
+                className={`glass-card flex items-center gap-2 px-3 py-2 ${
+                  p.id === activeProfileId ? 'border-primary/40 bg-primary/5' : ''
+                }`}
+              >
+                <span className="text-sm">🤖</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[12px] font-bold truncate">{p.name}</p>
+                  {p.botUsername && (
+                    <p className="text-[10px] text-text-muted truncate">@{p.botUsername}</p>
+                  )}
+                </div>
+                {p.id === activeProfileId ? (
+                  <span className="text-[10px] font-bold text-primary px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+                    활성
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => handleSwitchBot(p.id)}
+                    disabled={switchingId === p.id}
+                    className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-glass-border hover:border-primary/40 text-text-muted hover:text-text transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    {switchingId === p.id ? '전환 중...' : '전환'}
+                  </button>
+                )}
+                <button
+                  onClick={() => handleDeleteBot(p.id)}
+                  className="text-[11px] text-text-muted/50 hover:text-error transition-colors cursor-pointer ml-1"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* ─── Star + KakaoTalk chat banner ─── */}
       <div className="w-full max-w-md grid grid-cols-2 gap-2">
         <button
-          onClick={() => window.open('https://github.com/watersoo2231-jpg/hardclaw', '_blank')}
+          onClick={() => window.open('https://github.com/watersoo2231-jpg/insu-clu', '_blank')}
           className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl cursor-pointer bg-white/5 border border-glass-border hover:border-primary/40 hover:bg-white/8 transition-all duration-200"
         >
           <span className="text-lg">⭐</span>
