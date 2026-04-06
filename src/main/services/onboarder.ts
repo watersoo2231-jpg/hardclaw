@@ -407,6 +407,10 @@ export const runOnboard = async (
         const raw = await readWslFile('/root/.openclaw/openclaw.json')
         const ocConfig = JSON.parse(raw)
         ocConfig.channels = { ...ocConfig.channels, telegram: telegramChannel }
+        // gateway.mode가 없으면 자동 추가 (새 버전 OpenClaw 필수 필드)
+        if (!ocConfig.gateway?.mode) {
+          ocConfig.gateway = { ...ocConfig.gateway, mode: 'local' }
+        }
         await writeWslFile('/root/.openclaw/openclaw.json', JSON.stringify(ocConfig, null, 2))
         log(t('onboarder.telegramDone'))
       } catch {
