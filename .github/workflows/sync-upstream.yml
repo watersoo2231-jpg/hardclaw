@@ -65,7 +65,7 @@ jobs:
 
           # electron-builder.yml 브랜딩 보장
           sed -i 's/appId: com.easyclaw.app/appId: com.insuclu.app/' electron-builder.yml
-          sed -i 's/productName: EasyClaw/productName: 인수클루/' electron-builder.yml
+          sed -i 's/productName: EasyClaw/productName: InsuClu/' electron-builder.yml
           sed -i 's/executableName: EasyClaw/executableName: InsuClu/' electron-builder.yml
           sed -i 's/owner: ybgwon96/owner: watersoo2231-jpg/' electron-builder.yml
           sed -i 's/repo: easyclaw/repo: insu-clu/' electron-builder.yml

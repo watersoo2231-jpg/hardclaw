@@ -1,5 +1,5 @@
 appId: com.insuclu.app
-productName: 인수클루
+productName: InsuClu
 directories:
   buildResources: build
 files:
@@ -22,8 +22,8 @@ win:
         - x64
 nsis:
   artifactName: ${name}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
+  shortcutName: 인수클루
+  uninstallDisplayName: 인수클루
   createDesktopShortcut: always
 mac:
   icon: build/icon.icns
