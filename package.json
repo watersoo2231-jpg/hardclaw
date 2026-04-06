@@ -1,11 +1,11 @@
 {
-  "name": "insu-clu",
+  "name": "hardclaw",
   "version": "1.3.37",
-  "description": "인수클루 - OpenClaw 원클릭 인스톨러",
+  "description": "HardClaw - OpenClaw 원클릭 인스톨러",
   "license": "MIT",
   "main": "./out/main/index.js",
   "author": "watersoo2231-jpg",
-  "homepage": "https://github.com/watersoo2231-jpg/insu-clu",
+  "homepage": "https://github.com/watersoo2231-jpg/hardclaw",
   "keywords": [
     "openclaw",
     "ai-agent",

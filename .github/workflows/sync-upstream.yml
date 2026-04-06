@@ -56,29 +56,29 @@ jobs:
           node -e "
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.name = 'insu-clu';
-            pkg.description = '인수클루 - OpenClaw 원클릭 인스톨러';
+            pkg.name = 'hardclaw';
+            pkg.description = 'HardClaw - OpenClaw 원클릭 인스톨러';
             pkg.author = 'watersoo2231-jpg';
-            pkg.homepage = 'https://github.com/watersoo2231-jpg/insu-clu';
+            pkg.homepage = 'https://github.com/watersoo2231-jpg/hardclaw';
             fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
           "
 
           # electron-builder.yml 브랜딩 보장
-          sed -i 's/appId: com.easyclaw.app/appId: com.insuclu.app/' electron-builder.yml
-          sed -i 's/productName: EasyClaw/productName: InsuClu/' electron-builder.yml
-          sed -i 's/executableName: EasyClaw/executableName: InsuClu/' electron-builder.yml
+          sed -i 's/appId: com.easyclaw.app/appId: com.hardclaw.app/' electron-builder.yml
+          sed -i 's/productName: EasyClaw/productName: HardClaw/' electron-builder.yml
+          sed -i 's/executableName: EasyClaw/executableName: HardClaw/' electron-builder.yml
           sed -i 's/owner: ybgwon96/owner: watersoo2231-jpg/' electron-builder.yml
           sed -i 's/repo: easyclaw/repo: insu-clu/' electron-builder.yml
 
           # 소스 코드 브랜딩 보장
-          sed -i "s/com.easyclaw.app/com.insuclu.app/" src/main/index.ts
-          sed -i "s/tray.setToolTip('EasyClaw')/tray.setToolTip('인수클루')/" src/main/services/tray-manager.ts
-          sed -i "s|https://github.com/ybgwon96/easyclaw|https://github.com/watersoo2231-jpg/insu-clu|g" src/renderer/src/steps/DoneStep.tsx
-          sed -i "s|dist/easy-claw-setup.exe|dist/insu-clu-setup.exe|g" .github/workflows/release.yml
+          sed -i "s/com.easyclaw.app/com.hardclaw.app/" src/main/index.ts
+          sed -i "s/tray.setToolTip('EasyClaw')/tray.setToolTip('HardClaw')/" src/main/services/tray-manager.ts
+          sed -i "s|https://github.com/ybgwon96/easyclaw|https://github.com/watersoo2231-jpg/hardclaw|g" src/renderer/src/steps/DoneStep.tsx
+          sed -i "s|dist/easy-claw-setup.exe|dist/hardclaw-setup.exe|g" .github/workflows/release.yml
           sed -i "s|dist/easy-claw.dmg|dist/insu-clu.dmg|g" .github/workflows/release.yml
 
           git add -A
-          git diff --cached --quiet || git commit -m "chore: re-apply insu-clu branding after upstream sync"
+          git diff --cached --quiet || git commit -m "chore: re-apply HardClaw branding after upstream sync"
 
       - name: Push changes
         if: steps.check.outputs.changed == 'true'

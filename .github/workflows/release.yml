@@ -23,5 +23,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${{ github.event.release.tag_name }}" dist/insu-clu-setup.exe --clobber
-          gh release upload "${{ github.event.release.tag_name }}" dist/insu-clu-portable.exe --clobber
+          gh release upload "${{ github.event.release.tag_name }}" dist/hardclaw-setup.exe --clobber
+          gh release upload "${{ github.event.release.tag_name }}" dist/hardclaw-portable.exe --clobber

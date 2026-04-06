@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary: #f97316;
-  --color-primary-hover: #fb923c;
-  --color-primary-light: #fdba74;
-  --color-primary-glow: rgba(249, 115, 22, 0.35);
+  --color-primary: #dc2626;
+  --color-primary-hover: #ef4444;
+  --color-primary-light: #f87171;
+  --color-primary-glow: rgba(220, 38, 38, 0.35);
   --color-bg: #080c18;
   --color-bg-card: rgba(255, 255, 255, 0.05);
   --color-bg-card-hover: rgba(255, 255, 255, 0.08);
@@ -64,9 +64,9 @@ select {
   z-index: 0;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 20% 80%, rgba(249, 115, 22, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(220, 38, 38, 0.14) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(14, 165, 233, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(239, 68, 68, 0.06) 0%, transparent 60%),
     var(--color-bg);
   animation: aurora-shift 12s ease-in-out infinite alternate;
 }

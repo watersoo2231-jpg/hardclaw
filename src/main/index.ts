@@ -80,7 +80,7 @@ app.on('before-quit', () => {
 
 app.whenReady().then(async () => {
   await initI18nMain(getSavedLocale())
-  electronApp.setAppUserModelId('com.insuclu.app')
+  electronApp.setAppUserModelId('com.hardclaw.app')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)

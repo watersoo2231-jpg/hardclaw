@@ -1,5 +1,5 @@
-appId: com.insuclu.app
-productName: InsuClu
+appId: com.hardclaw.app
+productName: HardClaw
 directories:
   buildResources: build
 files:
@@ -13,7 +13,7 @@ asarUnpack:
   - resources/**
 win:
   icon: build/icon.ico
-  executableName: InsuClu
+  executableName: HardClaw
   forceCodeSigning: false
   requestedExecutionLevel: asInvoker
   target:
@@ -25,8 +25,8 @@ win:
         - x64
 nsis:
   artifactName: ${name}-setup.${ext}
-  shortcutName: 인수클루
-  uninstallDisplayName: 인수클루
+  shortcutName: HardClaw
+  uninstallDisplayName: HardClaw
   createDesktopShortcut: always
 portable:
   artifactName: ${name}-portable.${ext}
