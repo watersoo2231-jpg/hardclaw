@@ -2,6 +2,7 @@ import { spawn } from 'child_process'
 import { platform } from 'os'
 import { BrowserWindow } from 'electron'
 import { getPathEnv, findBin } from './path-utils'
+import { WSL_NVM_INIT } from './wsl-utils'
 
 const exec = (
   cmd: string,
@@ -43,10 +44,21 @@ export const runDoctorFix = async (win: BrowserWindow): Promise<{ success: boole
 
   if (isWin) {
     cmd = 'wsl'
-    args = ['-d', 'Ubuntu', '-u', 'root', '--', 'bash', '-lc', 'openclaw doctor --fix']
+    args = [
+      '-d',
+      'Ubuntu',
+      '-u',
+      'root',
+      '--',
+      'bash',
+      '-lc',
+      `${WSL_NVM_INIT}openclaw doctor --fix`
+    ]
   } else {
-    cmd = findBin('npm')
-    args = ['exec', '--', 'openclaw', 'doctor', '--fix']
+    // Call openclaw directly instead of `npm exec -- openclaw` — npm 10+
+    // cannot resolve globally installed packages in a non-interactive shell.
+    cmd = findBin('openclaw')
+    args = ['doctor', '--fix']
   }
 
   return new Promise((resolve) => {

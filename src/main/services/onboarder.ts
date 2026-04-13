@@ -5,7 +5,7 @@ import { platform, homedir } from 'os'
 import { join } from 'path'
 import https from 'https'
 import { BrowserWindow } from 'electron'
-import { runInWsl, readWslFile, writeWslFile } from './wsl-utils'
+import { runInWsl, readWslFile, writeWslFile, WSL_NVM_INIT } from './wsl-utils'
 import { t } from '../../shared/i18n/main'
 
 interface OnboardConfig {
@@ -87,7 +87,10 @@ const createRunCmd = (): ((
 
       if (isWindows) {
         // WSL mode: wsl -d Ubuntu -u root -- bash -lc "cmd args..."
-        const script = `${cmd} ${args.map((a) => `'${a.replace(/'/g, "'\\''")}'`).join(' ')}`
+        // Call openclaw directly instead of `npm exec -- openclaw` — npm 10+
+        // cannot resolve globally installed packages in a non-interactive
+        // bash -lc shell, which previously caused "command not found".
+        const script = `${WSL_NVM_INIT}${cmd} ${args.map((a) => `'${a.replace(/'/g, "'\\''")}'`).join(' ')}`
         fullCmd = 'wsl'
         fullArgs = ['-d', 'Ubuntu', '-u', 'root', '--', 'bash', '-lc', script]
       } else {
@@ -263,11 +266,7 @@ export const runOnboard = async (
   ]
 
   try {
-    await runCmd(
-      isWindows ? 'npm' : ocBin,
-      isWindows ? ['exec', '--', 'openclaw', ...openclawArgs] : [...openclawArgs],
-      log
-    )
+    await runCmd(ocBin, openclawArgs, log)
   } catch (e) {
     // Even if onboard fails with gateway connection test (1006),
     // continue if config file was created
@@ -614,11 +613,7 @@ export const switchProvider = async (
   ]
 
   try {
-    await runCmd(
-      isWindows ? 'npm' : ocBin,
-      isWindows ? ['exec', '--', 'openclaw', ...openclawArgs] : [...openclawArgs],
-      log
-    )
+    await runCmd(ocBin, openclawArgs, log)
   } catch (e) {
     if (isWindows) {
       try {

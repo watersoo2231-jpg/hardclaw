@@ -1,6 +1,7 @@
 import { spawn, ChildProcess } from 'child_process'
 import { platform } from 'os'
 import { getPathEnv, findBin } from './path-utils'
+import { WSL_NVM_INIT } from './wsl-utils'
 import { checkPort } from './troubleshooter'
 import { t } from '../../shared/i18n/main'
 
@@ -64,7 +65,7 @@ const startGatewayWsl = async (): Promise<GatewayResult> => {
         '--',
         'bash',
         '-lc',
-        'NODE_OPTIONS=--dns-result-order=ipv4first openclaw gateway run'
+        `${WSL_NVM_INIT}NODE_OPTIONS=--dns-result-order=ipv4first openclaw gateway run`
       ],
       { stdio: ['ignore', 'pipe', 'pipe'] }
     )
@@ -164,7 +165,16 @@ const runDoctorFix = (): Promise<void> =>
 
     if (isWin) {
       cmd = 'wsl'
-      args = ['-d', 'Ubuntu', '-u', 'root', '--', 'bash', '-lc', 'openclaw doctor --fix']
+      args = [
+        '-d',
+        'Ubuntu',
+        '-u',
+        'root',
+        '--',
+        'bash',
+        '-lc',
+        `${WSL_NVM_INIT}openclaw doctor --fix`
+      ]
     } else {
       cmd = findBin('openclaw')
       args = ['doctor', '--fix']

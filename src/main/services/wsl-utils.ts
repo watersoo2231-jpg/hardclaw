@@ -21,6 +21,14 @@ export const WSL_STATE_ORDER: readonly WslState[] = [
 const WSL_DISTRO = 'Ubuntu'
 const WSL_USER = 'root'
 
+/**
+ * nvm init snippet — sources nvm if present so node/npm/openclaw are on PATH
+ * in non-interactive `bash -lc` shells. No-op on NodeSource apt installs
+ * (the `[ -s ... ]` guard skips when nvm.sh does not exist).
+ */
+export const WSL_NVM_INIT =
+  'export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 2>/dev/null; '
+
 const runCmd = (cmd: string, args: string[], timeout = 15000): Promise<string> =>
   new Promise((resolve, reject) => {
     const child = spawn(cmd, args)
@@ -86,10 +94,19 @@ export const checkWslState = async (): Promise<WslState> => {
   }
 }
 
-/** Run command via bash -lc inside WSL Ubuntu (auto-loads nvm PATH) */
+/** Run command via bash -lc inside WSL Ubuntu (sources nvm if present) */
 export const runInWsl = (script: string, timeout = 30000): Promise<string> =>
   new Promise((resolve, reject) => {
-    const child = spawn('wsl', ['-d', WSL_DISTRO, '-u', WSL_USER, '--', 'bash', '-lc', script])
+    const child = spawn('wsl', [
+      '-d',
+      WSL_DISTRO,
+      '-u',
+      WSL_USER,
+      '--',
+      'bash',
+      '-lc',
+      WSL_NVM_INIT + script
+    ])
     const timer = setTimeout(() => {
       child.kill()
       reject(new Error('timeout'))
