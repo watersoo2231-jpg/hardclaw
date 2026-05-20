@@ -225,9 +225,7 @@
       var letter = prov.name.charAt(0)
       html +=
         '<div class="glass provider-card">' +
-        (prov.recommended
-          ? '<span class="provider-badge">' + badgeText + '</span>'
-          : '') +
+        (prov.recommended ? '<span class="provider-badge">' + badgeText + '</span>' : '') +
         '<div class="provider-icon" style="background:linear-gradient(135deg,' +
         prov.color +
         '22,' +

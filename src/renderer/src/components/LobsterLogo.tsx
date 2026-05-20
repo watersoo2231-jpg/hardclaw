@@ -92,10 +92,7 @@ export default function LobsterLogo({
           fill="url(#mg)"
         />
         {/* Left ear */}
-        <path
-          d="M20 44 C6 39 1 49 5 58 C9 67 19 63 24 54 C27 48 24 44 20 44Z"
-          fill="url(#mg)"
-        />
+        <path d="M20 44 C6 39 1 49 5 58 C9 67 19 63 24 54 C27 48 24 44 20 44Z" fill="url(#mg)" />
         {/* Right ear */}
         <path
           d="M100 44 C114 39 119 49 115 58 C111 67 101 63 96 54 C93 48 96 44 100 44Z"
