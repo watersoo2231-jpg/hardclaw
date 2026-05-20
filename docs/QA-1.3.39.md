@@ -5,12 +5,14 @@ reported by multiple users in the Kakao group chat. Run every scenario
 on both macOS and Windows (WSL) before tagging the release.
 
 ## Setup
+
 - [ ] Build a fresh installer from `feat/gateway-supervisor` + `feat/gateway-diagnostic`
 - [ ] Install over a v1.3.38 install (upgrade path) on both OSes
 - [ ] Verify `~/Library/Application Support/easy-claw/logs/` exists after first
       launch (macOS) or `%APPDATA%/easy-claw/logs/` (Windows)
 
 ## S1 — Force-kill triggers auto-restart
+
 - [ ] **macOS**: `pkill -9 -f openclaw-gateway`
   - Tray flips to "Gateway Restarting..." within ~5s
   - Within ~10s, tray returns to "Gateway Running"
@@ -23,6 +25,7 @@ on both macOS and Windows (WSL) before tagging the release.
     detects the inner process death.
 
 ## S2 — Crash loop hits give-up + diagnostic modal
+
 - [ ] Repeatedly kill the gateway 5 times within 60 s using the S1 commands
 - [ ] After the 5th attempt:
   - Tray label changes to "Gateway Failed (max restarts reached)"
@@ -35,6 +38,7 @@ on both macOS and Windows (WSL) before tagging the release.
 - [ ] Wait 60 minutes, kill again — auto-restart resumes (window slid)
 
 ## S3 — onboard finishes with gateway already alive
+
 - [ ] Wipe install (`uninstall:openclaw` + remove `~/.openclaw/`)
 - [ ] Run through onboarding from scratch with a Telegram bot
 - [ ] When DoneStep appears, `electronAPI.gateway.status()` returns
@@ -43,11 +47,13 @@ on both macOS and Windows (WSL) before tagging the release.
       receiving daemon output
 
 ## S4 — switchProvider boots the daemon exactly once
+
 - [ ] In DoneStep, click "변경" → switch from current provider to another
 - [ ] Inspect `gateway-restart-history.json` and the daemon log
 - [ ] Exactly **one** `kind=manual success=true` entry appears (was 2 in v1.3.38)
 
 ## S5 — App quit cleans up
+
 - [ ] macOS: tray menu → Quit
   - `pgrep -f openclaw-gateway` returns empty (or launchd-managed PID is gone)
   - Log file ends with `[meta] app quit — cleanup done`
@@ -55,11 +61,13 @@ on both macOS and Windows (WSL) before tagging the release.
   - `wsl --list --running` does not show openclaw running
 
 ## S6 — Log rotation
+
 - [ ] Generate a few days of logs (or fast-forward the system clock by 8 days)
 - [ ] Re-launch EasyClaw — files older than 7 days deleted from `logs/`
 - [ ] Create a 60 MB fake log to exceed cap — oldest files trimmed first
 
 ## S7 — PII masking
+
 - [ ] Trigger a crash with a placeholder bot token in the daemon stderr
       (set `TELEGRAM_BOT_TOKEN=bot<DIGITS>:<35+_TOKEN_CHARS>` shaped to match
       the regex `bot([0-9]+):[A-Za-z0-9_-]{30,}`)
@@ -69,6 +77,7 @@ on both macOS and Windows (WSL) before tagging the release.
       string matching the shape; do not paste a real key)
 
 ## Sign-off
+
 - [ ] macOS results captured in screenshots / paste of diagnostic text
 - [ ] Windows results captured the same way
 - [ ] CHANGELOG entry drafted

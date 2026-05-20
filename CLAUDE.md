@@ -53,7 +53,7 @@ src/shared/      → 공유 코드 (i18n: ko/en/ja/zh 4개 언어 지원)
 | `troubleshooter.ts` | 포트 점유 확인, `openclaw doctor --fix` 실행 등 진단 도구     |
 | `uninstaller.ts`    | OpenClaw 삭제 (npm uninstall -g + 설정 디렉토리 정리)         |
 | `backup.ts`         | OpenClaw 설정 백업/복원 (tar 기반, WSL 지원)                  |
-| `oauth.ts`          | OpenAI Codex OAuth 인증 (PKCE 플로우, 로컬 콜백 서버)        |
+| `oauth.ts`          | OpenAI Codex OAuth 인증 (PKCE 플로우, 로컬 콜백 서버)         |
 
 ### IPC 통신 패턴
 
