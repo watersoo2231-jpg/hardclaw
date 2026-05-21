@@ -9,6 +9,11 @@ interface UninstallState {
   error: string
 }
 
+interface ResetState {
+  modal: ModalPhase | null
+  error: string
+}
+
 interface BackupRestoreState {
   backupModal: ModalPhase | null
   backupMsg: string
@@ -21,6 +26,11 @@ interface ManagementActions {
     open: () => void
     close: () => void
     setRemoveConfig: (v: boolean) => void
+    execute: () => Promise<void>
+  }
+  reset: ResetState & {
+    open: () => void
+    close: () => void
     execute: () => Promise<void>
   }
   backup: BackupRestoreState & {
@@ -42,6 +52,8 @@ export const useManagement = (
     progress: '',
     error: ''
   })
+
+  const [reset, setReset] = useState<ResetState>({ modal: null, error: '' })
 
   const [br, setBr] = useState<BackupRestoreState>({
     backupModal: null,
@@ -68,6 +80,17 @@ export const useManagement = (
         modal: 'error',
         error: r.error || t('uninstall.errorFallback')
       }))
+    }
+  }
+
+  const executeReset = async (): Promise<void> => {
+    setReset({ modal: 'progress', error: '' })
+    const r = await window.electronAPI.config.reset()
+    if (r.success) {
+      onStatusChange('stopped')
+      setReset({ modal: 'done', error: '' })
+    } else {
+      setReset({ modal: 'error', error: r.error || t('reset.errorFallback') })
     }
   }
 
@@ -126,6 +149,12 @@ export const useManagement = (
       close: () => setUninstall((prev) => ({ ...prev, modal: null })),
       setRemoveConfig: (v) => setUninstall((prev) => ({ ...prev, removeConfig: v })),
       execute: executeUninstall
+    },
+    reset: {
+      ...reset,
+      open: () => setReset({ modal: 'confirm', error: '' }),
+      close: () => setReset({ modal: null, error: '' }),
+      execute: executeReset
     },
     backup: {
       ...br,

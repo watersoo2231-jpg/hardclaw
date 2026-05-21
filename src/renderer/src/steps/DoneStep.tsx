@@ -15,11 +15,13 @@ const UPDATE_CHECK_INTERVAL = 30 * 60 * 1000 // 30 min
 export default function DoneStep({
   botUsername,
   onTroubleshoot,
-  onUninstallDone
+  onUninstallDone,
+  onResetDone
 }: {
   botUsername?: string
   onTroubleshoot?: () => void
   onUninstallDone?: () => void
+  onResetDone?: () => void
 }): React.JSX.Element {
   const { t } = useTranslation('management')
   const [status, setStatus] = useState<'starting' | 'running' | 'stopped'>('starting')
@@ -50,7 +52,7 @@ export default function DoneStep({
   const tRef = useRef<TFunction>(t)
   tRef.current = t
 
-  const { uninstall, backup } = useManagement(setStatus)
+  const { uninstall, reset, backup } = useManagement(setStatus)
 
   // Check for OpenClaw updates
   const checkOpenclawUpdate = useCallback(async () => {
@@ -526,6 +528,13 @@ export default function DoneStep({
           <span className="text-[11px] font-bold flex-1 text-left">{t('done.copyDiagnostic')}</span>
         </button>
         <button
+          onClick={reset.open}
+          className="glass-card flex items-center gap-2 px-3 py-2 cursor-pointer hover:border-primary/40 transition-all duration-200"
+        >
+          <span className="text-sm">↩️</span>
+          <span className="text-[11px] font-bold flex-1 text-left">{t('done.reset')}</span>
+        </button>
+        <button
           onClick={uninstall.open}
           className="glass-card flex items-center gap-2 px-3 py-2 cursor-pointer hover:border-error/40 transition-all duration-200"
         >
@@ -598,6 +607,33 @@ export default function DoneStep({
               >
                 {t('common:button.delete')}
               </button>
+            </div>
+          </div>
+        </ManagementModal>
+      )}
+
+      {/* ─── Reset modal ─── */}
+      {reset.modal && (
+        <ManagementModal
+          title={t('reset.title')}
+          phase={reset.modal}
+          message={reset.modal === 'progress' ? t('reset.preparing') : t('reset.completed')}
+          errorMsg={reset.error}
+          onClose={() => {
+            const wasDone = reset.modal === 'done'
+            reset.close()
+            if (wasDone) onResetDone?.()
+          }}
+        >
+          <div className="space-y-3">
+            <p className="text-sm text-text-muted">{t('reset.desc')}</p>
+            <div className="flex gap-2 pt-1">
+              <Button variant="secondary" size="sm" onClick={reset.close}>
+                {t('common:button.cancel')}
+              </Button>
+              <Button variant="primary" size="sm" onClick={reset.execute}>
+                {t('reset.confirm')}
+              </Button>
             </div>
           </div>
         </ManagementModal>

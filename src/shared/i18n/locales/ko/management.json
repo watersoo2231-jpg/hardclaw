@@ -25,6 +25,7 @@
     "backup": "백업",
     "restore": "복원",
     "delete": "삭제",
+    "reset": "초기 설정",
     "restartingGw": "Gateway 재시작 중...",
     "errorPrefix": "[오류] {{msg}}",
     "settingsBackup": "설정 백업",
@@ -47,6 +48,14 @@
     "preparing": "삭제 준비 중...",
     "completed": "삭제가 완료되었습니다.",
     "errorFallback": "삭제 중 오류 발생"
+  },
+  "reset": {
+    "title": "처음 설정 다시 시작",
+    "desc": "API 키와 모델 설정을 초기화하고 위자드를 처음부터 다시 진행합니다. OpenClaw 패키지는 제거되지 않아요.",
+    "confirm": "재설정",
+    "preparing": "설정 초기화 중...",
+    "completed": "초기화되었습니다. 위자드로 이동합니다.",
+    "errorFallback": "초기화 중 오류 발생"
   },
   "backupRestore": {
     "backupProgress": "백업 파일 생성 중...",

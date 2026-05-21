@@ -186,6 +186,10 @@ function App(): React.JSX.Element {
                 window.electronAPI.wizard.clearState()
                 goTo('welcome')
               }}
+              onResetDone={() => {
+                window.electronAPI.wizard.clearState()
+                goTo('welcome')
+              }}
             />
           )}
           {currentStep === 'troubleshoot' && (

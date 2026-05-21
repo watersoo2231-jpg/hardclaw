@@ -25,6 +25,7 @@
     "backup": "备份",
     "restore": "恢复",
     "delete": "删除",
+    "reset": "重新配置",
     "restartingGw": "正在重启 Gateway...",
     "errorPrefix": "[错误] {{msg}}",
     "settingsBackup": "配置备份",
@@ -47,6 +48,14 @@
     "preparing": "准备删除中...",
     "completed": "删除已完成。",
     "errorFallback": "删除过程中发生错误"
+  },
+  "reset": {
+    "title": "重新进行初始设置",
+    "desc": "清除 API 密钥和模型设置，并从头开始重新运行向导。OpenClaw 软件包本身不会被删除。",
+    "confirm": "重置",
+    "preparing": "正在重置配置...",
+    "completed": "重置完成。返回向导。",
+    "errorFallback": "重置过程中发生错误"
   },
   "backupRestore": {
     "backupProgress": "正在创建备份文件...",

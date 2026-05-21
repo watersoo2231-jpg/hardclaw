@@ -25,6 +25,7 @@
     "backup": "バックアップ",
     "restore": "復元",
     "delete": "削除",
+    "reset": "初期設定",
     "restartingGw": "Gatewayを再起動中...",
     "errorPrefix": "[エラー] {{msg}}",
     "settingsBackup": "設定のバックアップ",
@@ -47,6 +48,14 @@
     "preparing": "削除の準備中...",
     "completed": "削除が完了しました。",
     "errorFallback": "削除中にエラーが発生しました"
+  },
+  "reset": {
+    "title": "初期設定をやり直す",
+    "desc": "APIキーとモデル設定をリセットし、ウィザードを最初からやり直します。OpenClawパッケージは削除されません。",
+    "confirm": "リセット",
+    "preparing": "設定を初期化中...",
+    "completed": "リセットが完了しました。ウィザードに戻ります。",
+    "errorFallback": "リセット中にエラーが発生しました"
   },
   "backupRestore": {
     "backupProgress": "バックアップファイルを作成中...",

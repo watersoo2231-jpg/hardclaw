@@ -529,6 +529,55 @@ export interface CurrentConfig {
   hasTelegram?: boolean
 }
 
+// Map model prefix to canonical provider id used by providerConfigs.
+// "zai/..." → "glm" (Z.AI brand uses zai prefix), "openai-codex/..." → "openai"
+const PROVIDER_PREFIX_MAP: Record<string, string> = {
+  zai: 'glm',
+  'openai-codex': 'openai'
+}
+
+const KNOWN_PROVIDERS = new Set([
+  'anthropic',
+  'google',
+  'openai',
+  'minimax',
+  'glm',
+  'deepseek',
+  'ollama'
+])
+
+const normalizeProvider = (raw: string | undefined): string | undefined => {
+  if (!raw) return undefined
+  const mapped = PROVIDER_PREFIX_MAP[raw] ?? raw
+  return KNOWN_PROVIDERS.has(mapped) ? mapped : undefined
+}
+
+/**
+ * Wipe `openclaw.json` (and stop the gateway) so the wizard re-runs from
+ * scratch. Used by the "Reconfigure" escape hatch on the Done step — keeps
+ * `openclaw` itself installed so the user only re-enters provider + key.
+ */
+export const resetOpenclawConfig = async (): Promise<void> => {
+  const isWindows = platform() === 'win32'
+  if (isWindows) {
+    // Best-effort: ignore errors if the file is already gone.
+    try {
+      await runInWsl('rm -f /root/.openclaw/openclaw.json', 10000)
+    } catch {
+      /* ignore */
+    }
+  } else {
+    const configPath = join(homedir(), '.openclaw', 'openclaw.json')
+    if (existsSync(configPath)) {
+      try {
+        unlinkSync(configPath)
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+}
+
 export const readCurrentConfig = async (): Promise<CurrentConfig | null> => {
   const isWindows = platform() === 'win32'
   try {
@@ -544,8 +593,7 @@ export const readCurrentConfig = async (): Promise<CurrentConfig | null> => {
     const cfg = JSON.parse(raw) as any
     const model = cfg?.agents?.defaults?.model?.primary as string | undefined
     const hasTelegram = !!cfg?.channels?.telegram?.botToken
-    // Extract provider from model ID (e.g. "anthropic/claude-sonnet-4-6" → "anthropic")
-    const provider = model?.split('/')[0]
+    const provider = normalizeProvider(model?.split('/')[0])
     return { provider, model, hasTelegram }
   } catch {
     return null

@@ -104,6 +104,7 @@ interface ElectronAPI {
       authMethod?: 'api-key' | 'oauth'
       modelId?: string
     }) => Promise<{ success: boolean; error?: string }>
+    reset: () => Promise<{ success: boolean; error?: string }>
   }
   openclaw: {
     checkUpdate: () => Promise<{ currentVersion: string | null; latestVersion: string | null }>
