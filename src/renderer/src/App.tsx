@@ -85,6 +85,13 @@ function App(): React.JSX.Element {
       const state = await window.electronAPI.wizard.loadState()
       if (state) {
         goTo(state.step as 'wslSetup' | 'envCheck')
+        return
+      }
+
+      // Already configured (openclaw.json has a provider) → skip wizard
+      if (env.openclawInstalled) {
+        const cfg = await window.electronAPI.config.read()
+        if (cfg.success && cfg.config?.provider) goTo('done')
       }
     })
   }, [goTo])
