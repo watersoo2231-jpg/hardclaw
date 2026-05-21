@@ -14,7 +14,12 @@ import {
   installNodeWsl,
   installOpenClawWsl
 } from './services/installer'
-import { runOnboard, readCurrentConfig, switchProvider } from './services/onboarder'
+import {
+  runOnboard,
+  readCurrentConfig,
+  switchProvider,
+  resetOpenclawConfig
+} from './services/onboarder'
 import {
   startGateway,
   stopGateway,
@@ -231,6 +236,21 @@ export const registerIpcHandlers = (getWin: () => BrowserWindow | null): void =>
       return { success: true, config }
     } catch (e) {
       return { success: false, config: null, error: e instanceof Error ? e.message : String(e) }
+    }
+  })
+
+  ipcMain.handle('config:reset', async () => {
+    try {
+      // Stop the gateway first so it doesn't keep serving the about-to-be-deleted config.
+      try {
+        await stopGateway()
+      } catch {
+        /* already stopped */
+      }
+      await resetOpenclawConfig()
+      return { success: true }
+    } catch (e) {
+      return { success: false, error: e instanceof Error ? e.message : String(e) }
     }
   })
 

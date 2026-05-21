@@ -125,26 +125,34 @@ const checkNodeAndOpenclaw = async (
     /* not installed */
   }
 
+  // Primary check: invoke the binary directly. This is the source of truth
+  // because the gateway also shells out to `openclaw`, so anything the gateway
+  // can run we should consider installed. Treating npm list as authoritative
+  // led to a state where `npm list -g openclaw` reported the package but
+  // `openclaw` was missing from PATH (broken symlink, prefix mismatch, etc.),
+  // so the wizard auto-skipped to Done while the gateway failed with
+  // `bash: openclaw: command not found`.
   try {
-    const raw = await run('npm', ['list', '-g', 'openclaw', '--json'])
-    const json = JSON.parse(raw)
-    const deps = json.dependencies?.openclaw
-    if (deps) {
+    const raw = await run('openclaw', ['--version'])
+    const ver = parseVersion(raw)
+    if (ver) {
       openclawInstalled = true
-      openclawVersion = deps.version ?? null
+      openclawVersion = ver
     }
   } catch {
-    /* not installed */
+    /* binary missing or broken — fall through */
   }
 
-  if (!openclawInstalled || !openclawVersion) {
+  // Fallback: if the binary itself doesn't respond, try npm list so we can
+  // still surface a version string in diagnostics. We do NOT flip
+  // openclawInstalled to true here; if the binary can't run, the gateway
+  // can't run, and the wizard should re-install instead of skipping to Done.
+  if (!openclawVersion) {
     try {
-      const raw = await run('openclaw', ['--version'])
-      const ver = parseVersion(raw)
-      if (ver) {
-        openclawInstalled = true
-        openclawVersion = ver
-      }
+      const raw = await run('npm', ['list', '-g', 'openclaw', '--json'])
+      const json = JSON.parse(raw)
+      const deps = json.dependencies?.openclaw
+      if (deps?.version) openclawVersion = deps.version
     } catch {
       /* not installed */
     }

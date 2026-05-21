@@ -23,9 +23,14 @@ export default function ProviderSwitchModal({
   const { t } = useTranslation('management')
   const { t: tp } = useTranslation('providers')
   const [phase, setPhase] = useState<Phase>('form')
-  const initProvider = (currentProvider as Provider) || 'anthropic'
+  // Fallback to anthropic if currentProvider is missing or unknown (e.g. legacy
+  // configs that stored 'zai' or 'openai-codex' instead of providerConfigs.id).
+  const lookupConfig = currentProvider
+    ? providerConfigs.find((p) => p.id === currentProvider)
+    : undefined
+  const initProvider: Provider = lookupConfig?.id ?? 'anthropic'
   const [provider, setProvider] = useState<Provider>(initProvider)
-  const initConfig = providerConfigs.find((p) => p.id === initProvider)!
+  const initConfig = lookupConfig ?? providerConfigs.find((p) => p.id === 'anthropic')!
   const initModelId =
     currentModel && initConfig.models.some((m) => m.id === currentModel)
       ? currentModel

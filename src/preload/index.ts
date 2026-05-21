@@ -170,7 +170,8 @@ const electronAPI = {
       authMethod?: 'api-key' | 'oauth'
       modelId?: string
     }): Promise<{ success: boolean; error?: string }> =>
-      ipcRenderer.invoke('config:switch-provider', config)
+      ipcRenderer.invoke('config:switch-provider', config),
+    reset: (): Promise<{ success: boolean; error?: string }> => ipcRenderer.invoke('config:reset')
   },
   openclaw: {
     checkUpdate: (): Promise<{ currentVersion: string | null; latestVersion: string | null }> =>

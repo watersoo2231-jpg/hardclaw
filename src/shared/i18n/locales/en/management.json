@@ -25,6 +25,7 @@
     "backup": "Backup",
     "restore": "Restore",
     "delete": "Delete",
+    "reset": "Reset Setup",
     "restartingGw": "Restarting Gateway...",
     "errorPrefix": "[Error] {{msg}}",
     "settingsBackup": "Settings Backup",
@@ -47,6 +48,14 @@
     "preparing": "Preparing to uninstall...",
     "completed": "Uninstallation complete.",
     "errorFallback": "An error occurred during uninstallation"
+  },
+  "reset": {
+    "title": "Reset Initial Setup",
+    "desc": "Clear the API key and model settings and re-run the wizard from the beginning. The OpenClaw package itself will not be removed.",
+    "confirm": "Reset",
+    "preparing": "Resetting configuration...",
+    "completed": "Reset complete. Returning to the wizard.",
+    "errorFallback": "An error occurred during reset"
   },
   "backupRestore": {
     "backupProgress": "Creating backup file...",
