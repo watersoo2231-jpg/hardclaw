@@ -13,6 +13,7 @@
     "nodeWslInstalling": "Node.js 22 LTS 설치 중...",
     "nodeWslDone": "Node.js 설치 완료!",
     "ocWslInstalling": "WSL 내부에 OpenClaw 설치 중...",
+    "npmCleanupRetry": "이전 설치 흔적을 정리하고 다시 시도하는 중...",
     "ocWslDone": "OpenClaw 설치 완료!",
     "nodeDownloading": "Node.js 22 다운로드 중...",
     "nodeInstallerOpening": "Node.js 설치 창을 열고 있습니다...",

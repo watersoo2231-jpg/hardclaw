@@ -1,6 +1,7 @@
 import { spawn } from 'child_process'
 import { StringDecoder } from 'string_decoder'
 import { createWriteStream, existsSync, mkdirSync } from 'fs'
+import { readdir, rm } from 'fs/promises'
 import { tmpdir, homedir } from 'os'
 import { join } from 'path'
 import https from 'https'
@@ -204,14 +205,37 @@ export const installNodeWsl = async (win: BrowserWindow): Promise<void> => {
 }
 
 /**
+ * Removes broken global openclaw state inside WSL. npm replaces global
+ * packages non-atomically — it renames the existing dir aside before moving
+ * the new one in — so a prior interrupted install can leave the package dir
+ * (or leftover `openclaw-*` temp dirs) half-written. Every later install then
+ * fails at the rename step with `ENOTEMPTY`. Wiping them + clearing the npm
+ * cache lets the next install start from a clean slate.
+ */
+const WSL_NPM_CLEANUP =
+  'ROOT="$(npm root -g 2>/dev/null)"; ' +
+  'if [ -n "$ROOT" ]; then rm -rf "$ROOT/openclaw" "$ROOT"/openclaw-* "$ROOT"/.openclaw-*; fi; ' +
+  'npm cache clean --force >/dev/null 2>&1 || true'
+
+/**
  * Reusable WSL install core — streams logs to onLine. Used by both the
  * interactive installer flow and the background auto-update path.
+ *
+ * On failure, clears any broken global state and retries once — npm global
+ * installs fail permanently with `ENOTEMPTY` when a prior install was
+ * interrupted, and a plain retry of the same command cannot recover.
  */
 export const installOpenClawWslCore = async (
   onLine: (msg: string) => void,
   timeoutMs = 300_000
 ): Promise<void> => {
-  await runInWslStreaming('npm install -g openclaw@latest', onLine, timeoutMs)
+  try {
+    await runInWslStreaming('npm install -g openclaw@latest', onLine, timeoutMs)
+  } catch {
+    onLine(t('installer.npmCleanupRetry'))
+    await runInWslStreaming(WSL_NPM_CLEANUP, onLine, 60_000).catch(() => {})
+    await runInWslStreaming('npm install -g openclaw@latest', onLine, timeoutMs)
+  }
 }
 
 /** Install openclaw globally inside WSL Ubuntu */
@@ -282,9 +306,29 @@ export const installOpenClawMacCore = async (onLine: (msg: string) => void): Pro
   await runWithLog('npm', ['config', 'set', 'prefix', npmGlobalDir], onLine, {
     env: getPathEnv()
   })
-  await runWithLog('npm', ['install', '-g', 'openclaw@latest'], onLine, {
-    env: getPathEnv()
-  })
+
+  const install = (): Promise<string[]> =>
+    runWithLog('npm', ['install', '-g', 'openclaw@latest'], onLine, { env: getPathEnv() })
+
+  try {
+    await install()
+  } catch {
+    // npm replaces global packages non-atomically; a prior interrupted
+    // install leaves broken state that fails forever with ENOTEMPTY. Wipe the
+    // openclaw package dir + temp leftovers, clear the cache, then retry once.
+    onLine(t('installer.npmCleanupRetry'))
+    const modulesDir = join(npmGlobalDir, 'lib', 'node_modules')
+    const entries = await readdir(modulesDir).catch(() => [] as string[])
+    await Promise.all(
+      entries
+        .filter((n) => n === 'openclaw' || n.startsWith('openclaw-') || n.startsWith('.openclaw-'))
+        .map((n) => rm(join(modulesDir, n), { recursive: true, force: true }).catch(() => {}))
+    )
+    await runWithLog('npm', ['cache', 'clean', '--force'], onLine, { env: getPathEnv() }).catch(
+      () => {}
+    )
+    await install()
+  }
 }
 
 export const installOpenClaw = async (win: BrowserWindow): Promise<void> => {
