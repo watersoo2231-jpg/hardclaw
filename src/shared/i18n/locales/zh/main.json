@@ -13,6 +13,7 @@
     "nodeWslInstalling": "正在安装 Node.js 22 LTS...",
     "nodeWslDone": "Node.js 安装完成！",
     "ocWslInstalling": "正在 WSL 内部安装 OpenClaw...",
+    "npmCleanupRetry": "正在清理上次未完成的安装并重试...",
     "ocWslDone": "OpenClaw 安装完成！",
     "nodeDownloading": "正在下载 Node.js 22...",
     "nodeInstallerOpening": "正在打开 Node.js 安装窗口...",

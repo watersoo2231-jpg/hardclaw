@@ -13,6 +13,7 @@
     "nodeWslInstalling": "Installing Node.js 22 LTS...",
     "nodeWslDone": "Node.js installation complete!",
     "ocWslInstalling": "Installing OpenClaw inside WSL...",
+    "npmCleanupRetry": "Cleaning up a broken previous install and retrying...",
     "ocWslDone": "OpenClaw installation complete!",
     "nodeDownloading": "Downloading Node.js 22...",
     "nodeInstallerOpening": "Opening the Node.js installer...",
