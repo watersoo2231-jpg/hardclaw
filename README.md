@@ -67,6 +67,18 @@ We're in the process of obtaining a Windows code signing certificate. You may se
 
 </details>
 
+## Pro Setup Service 🛠️
+
+Stuck during installation, or want everything set up for you? The creator of EasyClaw offers a **paid remote setup session** — installation, API key configuration, Telegram bot connection, and a quick usage walkthrough. About 40 minutes, ₩50,000 (~$40). Korean or English.
+
+📧 [hello@needslab.ai](mailto:hello@needslab.ai) — subject: "EasyClaw Setup"
+
+## Support EasyClaw ☕
+
+EasyClaw is free and open source, built and maintained by one person. If it saved you a trip through the terminal, consider buying the developer a coffee — it keeps the updates coming.
+
+**[☕ 후원하기 / Buy me a coffee](https://qr.kakaopay.com/281006011000066615032016)**
+
 ## Tech Stack
 
 | Area      | Technology                                               |
