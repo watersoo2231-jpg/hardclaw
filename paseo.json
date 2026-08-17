@@ -1,0 +1,13 @@
+{
+  "worktree": {
+    "setup": [
+      "npm ci",
+      "cp \"$PASEO_SOURCE_CHECKOUT_PATH/.env.local\" .env.local"
+    ]
+  },
+  "scripts": {
+    "lint": { "command": "npm run lint" },
+    "typecheck": { "command": "npm run typecheck" },
+    "dev": { "command": "npm run dev" }
+  }
+}
