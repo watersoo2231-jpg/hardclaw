@@ -5,7 +5,7 @@
 <h1 align="center">EasyClaw</h1>
 
 <p align="center">
-  <strong>一键安装 OpenClaw AI 代理</strong>
+  <strong>无需终端命令即可安装 OpenClaw AI 代理</strong>
 </p>
 
 <p align="center">
@@ -13,14 +13,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ybgwon96/easyclaw/releases/latest"><img src="https://img.shields.io/github/v/release/ybgwon96/easyclaw?color=f97316&style=flat-square" alt="Release"></a>
-  <a href="https://github.com/ybgwon96/easyclaw/releases"><img src="https://img.shields.io/github/downloads/ybgwon96/easyclaw/total?color=34d399&style=flat-square" alt="Downloads"></a>
+  <a href="https://github.com/needsbuilder/easyclaw/releases/latest"><img src="https://img.shields.io/github/v/release/needsbuilder/easyclaw?color=f97316&style=flat-square" alt="Release"></a>
+  <a href="https://github.com/needsbuilder/easyclaw/releases"><img src="https://img.shields.io/github/downloads/needsbuilder/easyclaw/total?color=34d399&style=flat-square" alt="Downloads"></a>
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-blue?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8b5cf6?style=flat-square" alt="License"></a>
 </p>
 
 <p align="center">
-  <a href="https://easyclaw.kr">官网</a> · <a href="https://github.com/ybgwon96/easyclaw/releases/latest">下载</a> · <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
+  <a href="https://easyclaw.kr">官网</a> · <a href="https://github.com/needsbuilder/easyclaw/releases/latest">下载</a> · <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
 </p>
 
 ---
@@ -43,17 +43,17 @@ EasyClaw 是一个桌面安装器，可以**无需任何终端命令**即可设�
 
 ## 主要功能
 
-- **一键安装** — 自动检测并安装 WSL、Node.js 和 OpenClaw
+- **无需终端命令** - 自动检测并安装 WSL、Node.js 和 OpenClaw（Windows 上安装 WSL 时需要重启，重启后重新打开 EasyClaw 即可从 WSL 步骤继续）
 - **多个 AI 提供商** — 支持 Anthropic、Google Gemini、OpenAI、MiniMax、GLM
 - **Telegram 集成** — 通过 Telegram 机器人随时随地使用 AI 代理
 - **跨平台** — 支持 macOS（Intel + Apple Silicon）和 Windows
 
 ## 下载
 
-| 操作系统 | 文件   | 链接                                                                                      |
-| -------- | ------ | ----------------------------------------------------------------------------------------- |
-| macOS    | `.dmg` | [下载](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw.dmg)       |
-| Windows  | `.exe` | [下载](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe) |
+| 操作系统 | 文件   | 链接                                                                                          |
+| -------- | ------ | --------------------------------------------------------------------------------------------- |
+| macOS    | `.dmg` | [下载](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw.dmg)       |
+| Windows  | `.exe` | [下载](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw-setup.exe) |
 
 也可以从 [easyclaw.kr](https://easyclaw.kr) 下载 — 会自动检测您的操作系统。
 

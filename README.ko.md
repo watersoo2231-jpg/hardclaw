@@ -5,7 +5,7 @@
 <h1 align="center">EasyClaw</h1>
 
 <p align="center">
-  <strong>OpenClaw AI 에이전트를 원클릭으로 설치하세요</strong>
+  <strong>터미널 명령 없이 OpenClaw AI 에이전트를 설치하세요</strong>
 </p>
 
 <p align="center">
@@ -13,14 +13,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ybgwon96/easyclaw/releases/latest"><img src="https://img.shields.io/github/v/release/ybgwon96/easyclaw?color=f97316&style=flat-square" alt="Release"></a>
-  <a href="https://github.com/ybgwon96/easyclaw/releases"><img src="https://img.shields.io/github/downloads/ybgwon96/easyclaw/total?color=34d399&style=flat-square" alt="Downloads"></a>
+  <a href="https://github.com/needsbuilder/easyclaw/releases/latest"><img src="https://img.shields.io/github/v/release/needsbuilder/easyclaw?color=f97316&style=flat-square" alt="Release"></a>
+  <a href="https://github.com/needsbuilder/easyclaw/releases"><img src="https://img.shields.io/github/downloads/needsbuilder/easyclaw/total?color=34d399&style=flat-square" alt="Downloads"></a>
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-blue?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8b5cf6?style=flat-square" alt="License"></a>
 </p>
 
 <p align="center">
-  <a href="https://easyclaw.kr">홈페이지</a> · <a href="https://github.com/ybgwon96/easyclaw/releases/latest">다운로드</a> · <a href="https://open.kakao.com/o/gbBkPehi">커뮤니티</a> · <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
+  <a href="https://easyclaw.kr">홈페이지</a> · <a href="https://github.com/needsbuilder/easyclaw/releases/latest">다운로드</a> · <a href="https://open.kakao.com/o/gbBkPehi">커뮤니티</a> · <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
 </p>
 
 ---
@@ -43,17 +43,17 @@
 
 ## 주요 기능
 
-- **원클릭 설치** — WSL, Node.js, OpenClaw 등 필요한 환경을 자동 감지 및 설치
+- **터미널 명령 없이 설치** - WSL, Node.js, OpenClaw 등 필요한 환경을 자동 감지 및 설치 (Windows는 WSL 설치 중 재부팅이 필요하며, 재부팅 후 EasyClaw를 다시 열면 WSL 단계부터 이어서 진행)
 - **AI 제공사 선택** — Anthropic, Google Gemini, OpenAI, MiniMax, GLM 지원
 - **텔레그램 연동** — 텔레그램 봇을 통해 어디서든 AI 에이전트 사용
 - **크로스 플랫폼** — macOS (Intel + Apple Silicon) / Windows 지원
 
 ## 다운로드
 
-| OS      | 파일   | 링크                                                                                          |
-| ------- | ------ | --------------------------------------------------------------------------------------------- |
-| macOS   | `.dmg` | [다운로드](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw.dmg)       |
-| Windows | `.exe` | [다운로드](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe) |
+| OS      | 파일   | 링크                                                                                              |
+| ------- | ------ | ------------------------------------------------------------------------------------------------- |
+| macOS   | `.dmg` | [다운로드](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw.dmg)       |
+| Windows | `.exe` | [다운로드](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw-setup.exe) |
 
 [easyclaw.kr](https://easyclaw.kr)에서도 OS에 맞는 파일이 자동으로 선택됩니다.
 

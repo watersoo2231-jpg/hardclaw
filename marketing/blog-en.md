@@ -59,14 +59,14 @@ We built a custom `useWizard` hook with history tracking for back navigation and
 
 ## Screenshots
 
-![Welcome](https://raw.githubusercontent.com/ybgwon96/easyclaw/main/docs/screenshots/welcome.png)
-![Environment Check](https://raw.githubusercontent.com/ybgwon96/easyclaw/main/docs/screenshots/env-check.png)
-![Done](https://raw.githubusercontent.com/ybgwon96/easyclaw/main/docs/screenshots/done.png)
+![Welcome](https://raw.githubusercontent.com/needsbuilder/easyclaw/main/docs/screenshots/welcome.png)
+![Environment Check](https://raw.githubusercontent.com/needsbuilder/easyclaw/main/docs/screenshots/env-check.png)
+![Done](https://raw.githubusercontent.com/needsbuilder/easyclaw/main/docs/screenshots/done.png)
 
 ## Try it out
 
-- **Download**: [macOS (.dmg)](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw.dmg) | [Windows (.exe)](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe)
-- **GitHub**: [github.com/ybgwon96/easyclaw](https://github.com/ybgwon96/easyclaw)
+- **Download**: [macOS (.dmg)](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw.dmg) | [Windows (.exe)](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw-setup.exe)
+- **GitHub**: [github.com/needsbuilder/easyclaw](https://github.com/needsbuilder/easyclaw)
 - **Website**: [easyclaw.kr](https://easyclaw.kr)
 
 It's MIT licensed and fully open source. Contributions welcome!

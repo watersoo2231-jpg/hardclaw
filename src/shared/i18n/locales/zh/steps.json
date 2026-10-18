@@ -4,7 +4,7 @@
     "windows": ["开始", "环境", "WSL", "安装", "API密钥", "Telegram", "配置", "完成"]
   },
   "welcome": {
-    "title": "专属 AI 智能体，一键搞定",
+    "title": "专属 AI 智能体，无需终端命令",
     "desc": "轻松快速安装 OpenClaw\n通过 Telegram 与 AI 对话",
     "start": "开始",
     "language": "语言"

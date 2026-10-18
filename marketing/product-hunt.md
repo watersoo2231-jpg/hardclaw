@@ -5,7 +5,7 @@
 - **Name**: EasyClaw
 - **Tagline**: Install OpenClaw AI agent with one click
 - **Website**: https://easyclaw.kr
-- **GitHub**: https://github.com/ybgwon96/easyclaw
+- **GitHub**: https://github.com/needsbuilder/easyclaw
 
 ## Description (Short)
 

@@ -57,9 +57,9 @@ ElectronアプリからWSLのインストールを自動化するのは予想以
 
 ## ダウンロード
 
-- **macOS**: [easy-claw.dmg](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw.dmg)
-- **Windows**: [easy-claw-setup.exe](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe)
-- **GitHub**: [github.com/ybgwon96/easyclaw](https://github.com/ybgwon96/easyclaw)
+- **macOS**: [easy-claw.dmg](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw.dmg)
+- **Windows**: [easy-claw-setup.exe](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw-setup.exe)
+- **GitHub**: [github.com/needsbuilder/easyclaw](https://github.com/needsbuilder/easyclaw)
 - **ウェブサイト**: [easyclaw.kr](https://easyclaw.kr)
 
 MITライセンスのオープンソースです。Issue やPRもお待ちしています！

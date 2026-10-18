@@ -4,7 +4,7 @@
     "windows": ["開始", "環境", "WSL", "インストール", "APIキー", "Telegram", "設定", "完了"]
   },
   "welcome": {
-    "title": "自分だけのAIエージェントを、ワンクリックで",
+    "title": "自分だけのAIエージェントを、ターミナル操作なしで",
     "desc": "OpenClawを簡単・スピーディにインストールして\nTelegramでAIと会話しましょう",
     "start": "開始する",
     "language": "言語"

@@ -12,7 +12,7 @@ No terminal. No npm. No config files.
 
 Download → Run → Enter API key. Done.
 
-🔗 github.com/ybgwon96/easyclaw
+🔗 github.com/needsbuilder/easyclaw
 
 🧵 Here's why I built it and what I learned ↓
 
@@ -74,7 +74,7 @@ Try it out:
 🍎 macOS: easyclaw.kr
 🪟 Windows: easyclaw.kr
 
-⭐ Star on GitHub: github.com/ybgwon96/easyclaw
+⭐ Star on GitHub: github.com/needsbuilder/easyclaw
 
 Feedback, issues, PRs — all welcome!
 

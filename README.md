@@ -5,7 +5,7 @@
 <h1 align="center">EasyClaw</h1>
 
 <p align="center">
-  <strong>One-click installer for OpenClaw AI agent</strong>
+  <strong>Install the OpenClaw AI agent without typing terminal commands</strong>
 </p>
 
 <p align="center">
@@ -13,14 +13,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ybgwon96/easyclaw/releases/latest"><img src="https://img.shields.io/github/v/release/ybgwon96/easyclaw?color=f97316&style=flat-square" alt="Release"></a>
-  <a href="https://github.com/ybgwon96/easyclaw/releases"><img src="https://img.shields.io/github/downloads/ybgwon96/easyclaw/total?color=34d399&style=flat-square" alt="Downloads"></a>
+  <a href="https://github.com/needsbuilder/easyclaw/releases/latest"><img src="https://img.shields.io/github/v/release/needsbuilder/easyclaw?color=f97316&style=flat-square" alt="Release"></a>
+  <a href="https://github.com/needsbuilder/easyclaw/releases"><img src="https://img.shields.io/github/downloads/needsbuilder/easyclaw/total?color=34d399&style=flat-square" alt="Downloads"></a>
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-blue?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8b5cf6?style=flat-square" alt="License"></a>
 </p>
 
 <p align="center">
-  <a href="https://easyclaw.kr">Website</a> · <a href="https://github.com/ybgwon96/easyclaw/releases/latest">Download</a> · <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
+  <a href="https://easyclaw.kr">Website</a> · <a href="https://github.com/needsbuilder/easyclaw/releases/latest">Download</a> · <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
 </p>
 
 ---
@@ -39,17 +39,17 @@ EasyClaw is a desktop installer that sets up [OpenClaw](https://github.com/openc
 
 ## Features
 
-- **One-Click Install** — Automatically detects and installs WSL, Node.js, and OpenClaw
+- **No Terminal Commands** - Automatically detects and installs WSL, Node.js, and OpenClaw (on Windows, WSL setup needs a reboot; reopen EasyClaw afterwards and it continues from the WSL step)
 - **Multiple AI Providers** — Supports Anthropic, Google Gemini, OpenAI, MiniMax, and GLM
 - **Telegram Integration** — Use your AI agent anywhere through a Telegram bot
 - **Cross-Platform** — macOS (Intel + Apple Silicon) and Windows
 
 ## Download
 
-| OS      | File   | Link                                                                                          |
-| ------- | ------ | --------------------------------------------------------------------------------------------- |
-| macOS   | `.dmg` | [Download](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw.dmg)       |
-| Windows | `.exe` | [Download](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe) |
+| OS      | File   | Link                                                                                              |
+| ------- | ------ | ------------------------------------------------------------------------------------------------- |
+| macOS   | `.dmg` | [Download](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw.dmg)       |
+| Windows | `.exe` | [Download](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw-setup.exe) |
 
 You can also download from [easyclaw.kr](https://easyclaw.kr) — it auto-detects your OS.
 

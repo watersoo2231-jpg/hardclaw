@@ -56,7 +56,7 @@ dmg:
       path: /Applications
 publish:
   provider: github
-  owner: ybgwon96
+  owner: needsbuilder
   repo: easyclaw
   releaseType: release
 npmRebuild: false
