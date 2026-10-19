@@ -4,7 +4,7 @@
     "windows": ["Start", "Env", "WSL", "Install", "API Key", "Telegram", "Config", "Done"]
   },
   "welcome": {
-    "title": "Your Own AI Agent, One Click Away",
+    "title": "Your Own AI Agent, No Terminal Needed",
     "desc": "Install OpenClaw quickly and easily,\nthen chat with AI on Telegram",
     "start": "Get Started",
     "language": "Language"

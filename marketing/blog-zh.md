@@ -61,9 +61,9 @@ macOS 上安装比较简单，但 Windows 上 OpenClaw 需要在 WSL（Windows S
 
 ## 下载
 
-- **macOS**: [easy-claw.dmg](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw.dmg)
-- **Windows**: [easy-claw-setup.exe](https://github.com/ybgwon96/easyclaw/releases/latest/download/easy-claw-setup.exe)
-- **GitHub**: [github.com/ybgwon96/easyclaw](https://github.com/ybgwon96/easyclaw)
+- **macOS**: [easy-claw.dmg](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw.dmg)
+- **Windows**: [easy-claw-setup.exe](https://github.com/needsbuilder/easyclaw/releases/latest/download/easy-claw-setup.exe)
+- **GitHub**: [github.com/needsbuilder/easyclaw](https://github.com/needsbuilder/easyclaw)
 - **官网**: [easyclaw.kr](https://easyclaw.kr)
 
 MIT 开源协议，欢迎提 Issue 和 PR！

@@ -1,11 +1,11 @@
 const translations = {
   ko: {
-    'meta.title': 'EasyClaw — OpenClaw 원클릭 설치 프로그램',
+    'meta.title': 'EasyClaw - 터미널 명령 없이 OpenClaw 설치',
     'meta.description':
-      'EasyClaw로 OpenClaw AI 에이전트를 원클릭 설치하세요. Windows & macOS 지원.',
+      'EasyClaw로 터미널 명령 없이 OpenClaw AI 에이전트를 설치하세요. Windows & macOS 지원.',
     'nav.download': '다운로드',
     'hero.tagline':
-      '복잡한 설정은 잊으세요.<br /><strong>OpenClaw AI 에이전트</strong>를 원클릭으로 설치하고 바로 대화하세요.',
+      '복잡한 설정은 잊으세요.<br /><strong>OpenClaw AI 에이전트</strong>를 터미널 명령 없이 설치하고 바로 대화하세요.',
     'hero.versionLoading': '최신 버전 확인 중...',
     'hero.versionFallback': '최신 버전 다운로드',
     'hero.versionRelease': '출시',
@@ -16,7 +16,7 @@ const translations = {
     'features.label': 'Features',
     'features.title': '왜 EasyClaw인가요?',
     'features.sub': '설치부터 실행까지, 모든 과정을 간단하게.',
-    'features.oneclick.title': '원클릭 설치',
+    'features.oneclick.title': '터미널 명령 없이 설치',
     'features.oneclick.desc':
       'WSL, Node.js, OpenClaw까지 필요한 모든 환경을 자동으로 감지하고 설치합니다.',
     'features.agent.title': 'AI 에이전트',
@@ -43,7 +43,7 @@ const translations = {
     'steps.chat.title': '대화 시작',
     'steps.chat.desc': 'API 키를 입력하면<br />바로 AI 에이전트 사용 가능',
     'cta.title': '지금 바로 시작하세요',
-    'cta.desc': '복잡한 터미널 작업 없이, 클릭 한 번으로 AI 에이전트를 설치하세요.',
+    'cta.desc': '복잡한 터미널 작업 없이 AI 에이전트를 설치하세요.',
     'cta.downloadMac': 'macOS 다운로드',
     'cta.downloadWin': 'Windows 다운로드',
     'community.title': '사용법이 궁금하다면?',
@@ -92,16 +92,16 @@ const translations = {
     'crossBanner.code.desc': 'Claude Code도 원클릭으로 설치해보세요',
     'crossBanner.code.btn': 'EasyCode 보기',
     'crossBanner.claw.title': 'EasyClaw',
-    'crossBanner.claw.desc': 'OpenClaw AI 에이전트도 원클릭으로 설치해보세요',
+    'crossBanner.claw.desc': 'OpenClaw AI 에이전트도 터미널 명령 없이 설치해보세요',
     'crossBanner.claw.btn': 'EasyClaw 보기'
   },
   en: {
-    'meta.title': 'EasyClaw — One-Click OpenClaw Installer',
+    'meta.title': 'EasyClaw - Install OpenClaw Without Terminal Commands',
     'meta.description':
-      'Install the OpenClaw AI agent with one click using EasyClaw. Supports Windows & macOS.',
+      'Use EasyClaw to install the OpenClaw AI agent without typing terminal commands. Supports Windows & macOS.',
     'nav.download': 'Download',
     'hero.tagline':
-      'Forget complicated setup.<br /><strong>Install the OpenClaw AI agent</strong> with one click and start chatting right away.',
+      'Forget complicated setup.<br /><strong>Install the OpenClaw AI agent</strong> without typing terminal commands and start chatting right away.',
     'hero.versionLoading': 'Checking latest version...',
     'hero.versionFallback': 'Download latest version',
     'hero.versionRelease': 'Released',
@@ -112,7 +112,7 @@ const translations = {
     'features.label': 'Features',
     'features.title': 'Why EasyClaw?',
     'features.sub': 'From installation to launch, everything made simple.',
-    'features.oneclick.title': 'One-Click Install',
+    'features.oneclick.title': 'No Terminal Commands',
     'features.oneclick.desc':
       'Automatically detects and installs everything you need — WSL, Node.js, and OpenClaw.',
     'features.agent.title': 'AI Agent',
@@ -139,7 +139,7 @@ const translations = {
     'steps.chat.title': 'Start Chatting',
     'steps.chat.desc': 'Enter your API key<br />and start using the AI agent',
     'cta.title': 'Get Started Now',
-    'cta.desc': 'Install your AI agent with a single click — no terminal needed.',
+    'cta.desc': 'Install your AI agent, no terminal commands needed.',
     'cta.downloadMac': 'macOS Download',
     'cta.downloadWin': 'Windows Download',
     'community.title': 'Have questions?',
@@ -190,16 +190,16 @@ const translations = {
     'crossBanner.code.desc': 'Install Claude Code with one click too',
     'crossBanner.code.btn': 'View EasyCode',
     'crossBanner.claw.title': 'EasyClaw',
-    'crossBanner.claw.desc': 'Install OpenClaw AI agent with one click too',
+    'crossBanner.claw.desc': 'Install OpenClaw AI agent without terminal commands too',
     'crossBanner.claw.btn': 'View EasyClaw'
   },
   ja: {
-    'meta.title': 'EasyClaw — OpenClaw ワンクリックインストーラー',
+    'meta.title': 'EasyClaw - ターミナル操作なしでOpenClawをインストール',
     'meta.description':
-      'EasyClawでOpenClaw AIエージェントをワンクリックインストール。Windows & macOS対応。',
+      'EasyClawでOpenClaw AIエージェントをターミナル操作なしでインストール。Windows & macOS対応。',
     'nav.download': 'ダウンロード',
     'hero.tagline':
-      '複雑な設定は忘れてください。<br /><strong>OpenClaw AIエージェント</strong>をワンクリックでインストールしてすぐに会話を始めましょう。',
+      '複雑な設定は忘れてください。<br /><strong>OpenClaw AIエージェント</strong>をターミナル操作なしでインストールしてすぐに会話を始めましょう。',
     'hero.versionLoading': '最新バージョン確認中...',
     'hero.versionFallback': '最新バージョンをダウンロード',
     'hero.versionRelease': 'リリース',
@@ -210,7 +210,7 @@ const translations = {
     'features.label': 'Features',
     'features.title': 'なぜEasyClawなのか？',
     'features.sub': 'インストールから実行まで、すべてをシンプルに。',
-    'features.oneclick.title': 'ワンクリックインストール',
+    'features.oneclick.title': 'ターミナル操作不要',
     'features.oneclick.desc':
       'WSL、Node.js、OpenClawまで必要なすべての環境を自動で検出してインストールします。',
     'features.agent.title': 'AIエージェント',
@@ -238,7 +238,7 @@ const translations = {
     'steps.chat.title': '会話開始',
     'steps.chat.desc': 'APIキーを入力すれば<br />すぐにAIエージェントが使えます',
     'cta.title': '今すぐ始めましょう',
-    'cta.desc': '複雑なターミナル操作なしで、ワンクリックでAIエージェントをインストール。',
+    'cta.desc': '複雑なターミナル操作なしで、AIエージェントをインストール。',
     'cta.downloadMac': 'macOS ダウンロード',
     'cta.downloadWin': 'Windows ダウンロード',
     'community.title': '使い方が気になりますか？',
@@ -287,15 +287,15 @@ const translations = {
     'crossBanner.code.desc': 'Claude Codeもワンクリックでインストール',
     'crossBanner.code.btn': 'EasyCodeを見る',
     'crossBanner.claw.title': 'EasyClaw',
-    'crossBanner.claw.desc': 'OpenClaw AIエージェントもワンクリックでインストール',
+    'crossBanner.claw.desc': 'OpenClaw AIエージェントもターミナル操作なしでインストール',
     'crossBanner.claw.btn': 'EasyClawを見る'
   },
   zh: {
-    'meta.title': 'EasyClaw — OpenClaw 一键安装程序',
-    'meta.description': '使用EasyClaw一键安装OpenClaw AI代理。支持Windows和macOS。',
+    'meta.title': 'EasyClaw - 无需终端命令安装 OpenClaw',
+    'meta.description': '使用EasyClaw，无需终端命令即可安装OpenClaw AI代理。支持Windows和macOS。',
     'nav.download': '下载',
     'hero.tagline':
-      '忘掉复杂的配置吧。<br /><strong>一键安装OpenClaw AI代理</strong>，立即开始对话。',
+      '忘掉复杂的配置吧。<br /><strong>无需终端命令即可安装OpenClaw AI代理</strong>，立即开始对话。',
     'hero.versionLoading': '正在检查最新版本...',
     'hero.versionFallback': '下载最新版本',
     'hero.versionRelease': '已发布',
@@ -306,7 +306,7 @@ const translations = {
     'features.label': 'Features',
     'features.title': '为什么选择EasyClaw？',
     'features.sub': '从安装到运行，一切从简。',
-    'features.oneclick.title': '一键安装',
+    'features.oneclick.title': '无需终端命令',
     'features.oneclick.desc': '自动检测并安装所需的所有环境——WSL、Node.js和OpenClaw。',
     'features.agent.title': 'AI代理',
     'features.agent.desc': '支持Google、OpenAI、Anthropic、DeepSeek、Ollama等7家供应商。',
@@ -329,7 +329,7 @@ const translations = {
     'steps.chat.title': '开始对话',
     'steps.chat.desc': '输入API密钥<br />即可使用AI代理',
     'cta.title': '立即开始',
-    'cta.desc': '无需复杂的终端操作，一键安装AI代理。',
+    'cta.desc': '无需复杂的终端操作，即可安装AI代理。',
     'cta.downloadMac': 'macOS 下载',
     'cta.downloadWin': 'Windows 下载',
     'community.title': '有使用疑问？',
@@ -375,7 +375,7 @@ const translations = {
     'crossBanner.code.desc': '也来一键安装Claude Code吧',
     'crossBanner.code.btn': '查看EasyCode',
     'crossBanner.claw.title': 'EasyClaw',
-    'crossBanner.claw.desc': '也来一键安装OpenClaw AI代理吧',
+    'crossBanner.claw.desc': '无需终端命令，也来安装OpenClaw AI代理吧',
     'crossBanner.claw.btn': '查看EasyClaw'
   }
 }
